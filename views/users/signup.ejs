@@ -1,0 +1,50 @@
+<% include ../partials/header %>
+
+<h2 class="ui dividing header" id="indent">Sign Up!</h2>
+  <form method="POST" action="/signup" >
+
+<div class="ui large form segment">
+  <div class="two fields">
+    <div class="required field">
+      <label>Username</label>
+      <div class="ui icon input">
+      <input placeholder="Username" type="text" name="user[username]">
+      <i class="user icon"></i>
+      </div>
+    </div>
+    <div class="required field">
+      <label>E-mail</label>
+      <input placeholder="E-mail" type="text" name="user[email]">
+    </div>
+  </div>
+
+    <div class="field">
+    <div class="required field">
+      <div class="six wide field">
+       <div class="required field">
+      <label>Password</label>
+      <div class="ui icon input">
+      <input placeholder="Password" type="password" name="user[password]">
+      <i class="lock icon"></i>
+      </div>
+      </div>
+      </div>
+    </div>
+    </div>
+  
+  <div>
+       <input type="submit" value="Sign Up">
+  </div>
+</div>
+</form>
+<br>
+  <% if(err) { %>
+<h4><font color="red"><%= err%></font></h4>
+<% } %>
+<br>
+
+<a href="/login" id="indent">Already have an account? Login in here</a>
+
+
+
+<% include ../partials/footer %>
