@@ -106,10 +106,77 @@ app.get("/logout", function (req, res) {
 //******************* PLACE ROUTES *************************//
 
 
-// INDEX ROUTE //
+// INDEX ROUTE (RESTRICTED TO LOGGED IN USER) //
 
 app.get('/places', function(req,res){
-res.render("places/index", {currentuser:""});
+db.Place.find({}, function(err,places){
+  if(err) {
+    console.log(err);
+    res.render("errors/500");
+} else {
+  res.render("places/index", {currentuser:"", places:places});
+      }
+  });
+});
+
+
+
+
+
+// NEW ROUTE (RESTRICTED TO LOGGED IN USER) //
+
+app.get('/places/new', routeMiddleware.ensureLoggedIn, function(req,res){
+  res.render("places/new");
+});
+
+
+
+
+// CREATE (RESTRICTED TO LOGGED IN USER) //
+
+app.post('/places', routeMiddleware.ensureLoggedIn, function(req,res){
+  var place = new db.Place(req.body.place);
+    place.ownerId = req.session.id;
+    place.save(function(err,place){
+      // console.log(place);
+      res.redirect("/places");
+    });
+});
+
+
+
+// EDIT (RESTRICTED TO SPECIFIC LOGGED IN USER) //
+
+app.get('/places/:id/edit', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUser, function(req,res){
+  db.Place.findById(req.params.id).populate('entries').exec(
+     function (err, place) {
+         res.render("places/edit", {place:place});
+     });
+});
+
+
+// SHOW (RESTRICTED TO SPECIFIC LOGGED IN USER) //
+
+app.get('/places/:id', function(req,res){
+  db.Place.findById(req.params.id).populate('entries').exec(
+    function (err, place) {
+        res.render("places/show", {place:place});
+    });
+});
+
+
+// UPDATE (RESTRICTED TO SPECIFIC LOGGED IN USER) //
+
+app.put('/places/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUser, function(req,res){
+ db.Place.findByIdAndUpdate(req.params.id, req.body.place,
+     function (err, place) {
+       if(err) {
+         res.render("places/edit");
+       }
+       else {
+         res.redirect("/places");
+       }
+     });
 });
 
 
@@ -128,6 +195,30 @@ res.render("places/index", {currentuser:""});
 
 
 
+
+
+
+// DESTROY (RESTRICTED TO SPECIFIC LOGGED IN USER) //
+
+app.delete('/places/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUser, 
+  function(req,res){
+  db.Place.findById(req.params.id,
+    function (err, place) {
+      if(err) {
+        console.log(err);
+        res.render("places/show");
+      }
+      else {
+        place.remove();
+        res.redirect("/places");
+      }
+    });
+});
+
+
+
+
+//******************* ENTRY ROUTES ***********************//
 
 
 

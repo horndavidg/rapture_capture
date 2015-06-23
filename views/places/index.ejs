@@ -1,16 +1,40 @@
-<% include ../partials/header %>
+<% include ../partials/headerIndex %>
 
 
 
 
 <h1 class="lp_h1">You made it to the INDEX PLACES PAGE!</h1>
+<br>
+<h3 class="ui dividing header" id="indent">Travel Log:</h3>
+
+<table class="ui inverted red table">
+  <thead>
+    <tr>
+      <th><strong>Vacation:</strong></th>
+      <th><strong>Dates:</strong></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<% places.forEach(function(place){ %>
+  <tr>
+   <td><strong><a class="linkTitle" href="/places/<%= place._id%>"><%= place.name %></a></strong></td>
+    <% var start = place.startdate.slice(5,7) + "/" + place.startdate.slice(8,10) + "/" + place.startdate.slice(0,4);
+    var end = place.enddate.slice(5,7) + "/" + place.enddate.slice(8,10) + "/" + place.enddate.slice(0,4);
+    %>
+
+    <td><strong><%= start %></strong> - to - <strong><%= end %></strong></td>
+    <td><a class="linkTitle" href="/places/<%= place.id %>/edit"><strong>Edit</strong></a></td>
+
+  </tr>
+<% })%>
+
+</tbody>
+</table>
 
 
 
-
-
-
-
+ <a id="indent" href="/places/new">Add a new Place!</a>
 
 
 

@@ -1,10 +1,18 @@
 .lp_h1 {
 text-align: center;
-margin-top: 20%;
+margin-top: 10%;
 font-family: ‘Palatino Linotype’, ‘Book Antiqua’, Palatino, serif;
 font-size: 60px;
 }
 
 #indent {
 	margin-left: 2%;
+}
+
+#newForm {
+	margin-left: 1%;
+}
+
+.linkTitle {
+	color: #141947;
 }

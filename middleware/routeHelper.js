@@ -12,7 +12,7 @@ var routeHelpers = {
 
   ensureCorrectUser: function(req, res, next) {
     db.Place.findById(req.params.id, function(err,place){
-      if (post.ownerId !== req.session.id) {
+      if (place.ownerId !== req.session.id) {
         res.redirect('/');
       }
       else {
