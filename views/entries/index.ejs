@@ -32,10 +32,10 @@
     <td><strong><%= date %></strong></td>
 
       <% } %>
-
+  
     <td><%= entry.body %></td>
     
-    <td><a class="linkTitle" href="/entries/<%= entry._id %>/edit"><strong>Edit</strong></a></td>
+    <td><a href="/entries/<%= entry._id %>/edit"><button class="ui inverted button">Edit</button></a></td>
 
      <td><form action="/entries/<%= entry._id%>?_method=DELETE" method="POST">
       <input type="submit" value="Delete Entry!" class="ui inverted button">

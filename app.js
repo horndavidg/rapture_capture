@@ -211,7 +211,7 @@ app.get('/places/:place_id/entries', function(req,res){
 });
 
 
-// NEW (RESTRICTED TO LOGGED IN USER) //
+// NEW ENTRY (RESTRICTED TO LOGGED IN USER) //
 
 app.get('/places/:place_id/entries/new', routeMiddleware.ensureLoggedIn, function(req,res){
   db.Place.findById(req.params.place_id,
@@ -220,7 +220,7 @@ app.get('/places/:place_id/entries/new', routeMiddleware.ensureLoggedIn, functio
     });
 });
 
-// CREATE (RESTRICTED TO LOGGED IN USER) //
+// CREATE ENTRY (RESTRICTED TO LOGGED IN USER) //
 
 app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(req,res){
   db.Entry.create(req.body.entry, function(error, entries){
@@ -260,6 +260,14 @@ app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(r
 });
 
 
+// EDIT ENTRY (RESTRICTED TO SPECIFIC LOGGED IN USER) //
+
+app.get('/entries/:id/edit', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUserE, 
+  function(req,res){
+  db.Entry.findById(req.params.id).populate('place').exec(function(err,entry){
+      res.render("entries/edit", {entry:entry, err:err});
+    });
+});
 
 
 
