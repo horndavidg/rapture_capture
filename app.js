@@ -318,7 +318,7 @@ app.put('/entries/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCo
 
 
 
-// SHOW ** NOT USED ** (RESTRICTED TO SPECIFIC LOGGED IN USER) //
+// SHOW (RESTRICTED TO SPECIFIC LOGGED IN USER) //
 
 app.get('/entries/:id', function(req,res){
   db.Entry.findById(req.params.id)

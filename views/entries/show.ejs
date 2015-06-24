@@ -1,12 +1,15 @@
 <% include ../partials/headerUser %>
 
 
-<h1 class="lp_h1">You made it to the SHOW ENTRY PAGE!</h1>
+<h1 class="lp_h1"><%= entry.name%></h1>
 
 
-<h1 class="lp_h1">Do I NEED this PAGE!?</h1>
+<h1 class="lp_p"><%= entry.body%></h1>
 
 
+<br>
+<br>
+<a href="/places/<%= entry.place._id%>/entries" id="indent">See all Journal Entries</a>
 
 
 
