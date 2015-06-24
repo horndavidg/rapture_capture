@@ -4,21 +4,31 @@
 <h1 class="lp_h1">You made it to the SHOW PLACE PAGE!</h1>
 
 
-<h3><%= place.name%></h3>
+<h3><strong>Name:</strong> <%= place.name%></h3>
 
-<h3><%= place.location%></h3>
+<h3><strong>Location:</strong> <%= place.location%></h3>
 
-<h3><%= place.startdate%></h3>
+<h3><strong>Start Date:</strong> <%= place.startdate%></h3>
 
-<h3><%= place.enddate%></h3>
+<h3><strong>End Date:</strong> <%= place.enddate%></h3>
 
-<h3><%= place.image[0]%></h3>
+<h3><a href="<%= place.image[0]%>" target="_blank">Image 1</a></h3>
 
-<h3><%= place.image[1]%></h3>
+<img src="<%= place.image[0]%>" alt="<%= place.image[0]%>" height=280>
 
-<h3><%= place.image[2]%></h3>
+<h3><a href="<%= place.image[1]%>" target="_blank">Image 2</a></h3>
 
+<img src="<%= place.image[1]%>" alt="<%= place.image[1]%>" height=280>
 
+<h3><a href="<%= place.image[2]%>" target="_blank">Image 3</a></h3>
+
+<img src="<%= place.image[2]%>" alt="<%= place.image[2]%>" height=280>
+
+<br>
+
+<a href="/places/<%= place._id%>/entries/new" id="indent">Add a Journal Entry</a>
+
+<br>
 <br>
 
 <a href="/places" id="indent">Go Back</a>

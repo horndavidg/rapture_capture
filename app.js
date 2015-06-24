@@ -59,7 +59,6 @@ app.post("/signup", function (req,res) {
       res.redirect("/places");
     } else if (err){
       
-        // Conditional logic for err handling here!
        // ERROR HANDLING - SEE VIEWS AND MODELS FILES
       res.render("users/signup", {err:err});
 
@@ -108,7 +107,7 @@ app.get("/logout", function (req, res) {
 
 // INDEX ROUTE (RESTRICTED TO LOGGED IN USER) //
 
-app.get('/places', function(req,res){
+app.get('/places', routeMiddleware.ensureLoggedIn, function(req,res){
 db.Place.find({}, function(err,places){
   if(err) {
     console.log(err);
@@ -118,9 +117,6 @@ db.Place.find({}, function(err,places){
       }
   });
 });
-
-
-
 
 
 // NEW ROUTE (RESTRICTED TO LOGGED IN USER) //
@@ -157,7 +153,7 @@ app.get('/places/:id/edit', routeMiddleware.ensureLoggedIn, routeMiddleware.ensu
 
 // SHOW (RESTRICTED TO SPECIFIC LOGGED IN USER) //
 
-app.get('/places/:id', function(req,res){
+app.get('/places/:id', routeMiddleware.ensureLoggedIn, function(req,res){
   db.Place.findById(req.params.id).populate('entries').exec(
     function (err, place) {
         res.render("places/show", {place:place});
@@ -178,23 +174,6 @@ app.put('/places/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCor
        }
      });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -221,7 +200,20 @@ app.delete('/places/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensure
 //******************* ENTRY ROUTES ***********************//
 
 
+// INDEX (RESTRICTED TO LOGGED IN USER) //
 
+// Not sure if I'm going to need an index page for Journal Entries 
+// at this point!
+
+
+// NEW (RESTRICTED TO LOGGED IN USER) //
+
+app.get('/places/:place_id/entries/new', routeMiddleware.ensureLoggedIn, function(req,res){
+  db.Place.findById(req.params.place_id,
+    function (err, place) {
+      res.render("entries/new", {place:place});
+    });
+});
 
 
 

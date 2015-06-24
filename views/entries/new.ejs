@@ -1,0 +1,66 @@
+<% include ../partials/headerUser %>
+
+
+
+
+<h1 class="lp_h1">You made it to the NEW ENTRIES PAGE!</h1>
+<br>
+
+<h2 class="ui dividing header" id="indent">Make a New Journal Entry for <%= place.name%>!</h2>
+  
+  <form action="/places/<%= place._id%>/entries" method="POST" id="newForm">  
+
+
+  <div class="ui form">
+    <div class="ui info message">
+      <div class="header">Use Journal Entries to help track and remember all those amazing things that you did each day!</div>
+      <ul class="list">
+        <li>List Items?</li>
+      </ul>
+    </div>
+
+    <div class="fields">
+      <div class="six wide field">
+        <label>Title:</label>
+        <input placeholder="Title this Journal Entry" type="text" name="entry[name]" autofocus>
+      </div>
+      <div class="four wide field">
+        <label>Date this Entry:</label>
+        <input type="date" name="entry[date]">
+      </div>
+       </div>
+       
+       <div class="fields">
+       <div class="eight wide field">
+          <label>Entry: </label>
+    <textarea name="entry[body]" rows="4" cols="30" ></textarea>
+      </div>
+      </div>
+
+       <div class="fields">
+		<div class="four wide field">
+        <label>Image 1:</label>
+        <input placeholder="URL Please" type="text" name="entry[[image]]">
+      </div>
+      <div class="four wide field">
+        <label>Image 2:</label>
+        <input placeholder="URL Please" type="text" name="entry[[image]]">
+      </div>
+       <div class="four wide field">
+        <label>Image 3:</label>
+        <input placeholder="URL Please" type="text" name="entry[[image]]">
+      </div>
+	</div>
+    
+   <div>
+       <input type="submit" value="Write It" class="ui primary button">
+  </div>
+  </div>
+  </form>
+  <br>
+  <a href="/places/<%= place._id%>/edit" id="indent">Go Back</a>
+
+
+
+
+<% include ../partials/footer %>
