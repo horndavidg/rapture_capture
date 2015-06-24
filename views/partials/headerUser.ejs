@@ -30,6 +30,16 @@
        <i class="home icon"></i> <span id="appName">Rapture Capture</span>
     </a>
 
+   <% if(currentuser !== ""){ %>
+
+    <div class="right menu">
+       <a class="item" href="/logout">
+        <i class="user icon"></i>Logout: <%= currentuser%>
+      </a>
+    </div>
+
+    <% } else { %>
+
     <div class="right menu">
        
        <a class="item" href="/logout">
@@ -37,4 +47,5 @@
       </a>
 
     </div>
+    <% } %>
   </div>

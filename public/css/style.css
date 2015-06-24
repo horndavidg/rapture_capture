@@ -17,6 +17,10 @@ font-size: 60px;
 	color: #141947;
 }
 
+#center {
+     text-align: center;
+}
+
 /*body {
 
   background: url(http://www.beyondwealthsports.com/wp-content/uploads/2012/10/leatherBackground.png) no-repeat center center fixed; 

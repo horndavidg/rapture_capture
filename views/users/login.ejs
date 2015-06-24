@@ -1,6 +1,12 @@
 <% include ../partials/header %>
 
+
 <h2 class="ui dividing header" id="indent">Login!</h2>
+
+ <% if(err) { %>
+<h4 id="indent"><font color="red"><%= err%></font></h4>
+<% } %>
+
   <form action="/login" method="POST">
 
 <div class="ui large form segment">
@@ -38,9 +44,6 @@
 </div>
 </form>
 <br>
-  <% if(err) { %>
-<h4><font color="red"><%= err%></font></h4>
-<% } %>
 <br>
 
 <a href="/signup" id="indent">Don't have an account? Sign up here</a>

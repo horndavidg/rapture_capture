@@ -82,7 +82,8 @@ app.post("/login", function (req, res) {
       req.login(user);
       res.redirect("/places");
     } else {
-      
+      console.log(err);
+      console.log(user);
       // ERROR HANDLING - SEE VIEWS AND MODELS FILES
       res.render("users/login", {err:err});
     }
@@ -98,7 +99,8 @@ app.get("/logout", function (req, res) {
 });
 
 
-
+var currentuser;
+// used for nav bar
 
 
 
@@ -108,22 +110,45 @@ app.get("/logout", function (req, res) {
 // INDEX ROUTE (RESTRICTED TO LOGGED IN USER) //
 
 app.get('/places', routeMiddleware.ensureLoggedIn, function(req,res){
-db.Place.find({}).populate('entries').exec(function(err,places){
+db.Place.find({'ownerId':req.session.id}).populate('entries').populate('author')
+    .exec(function(err,places){
   if(err) {
     console.log(err);
     res.render("errors/500");
 } else {
-  res.render("places/index", {currentuser:"", places:places});
+      if(req.session.id === null){
+        res.render('places/index', {places:places, currentuser:""});
+      } else {
+        db.User.findById(req.session.id, function(err,user){
+          
+          currentuser = user.username;
+          // sets the current user variable to the current user that is loged in
+
+          res.render('places/index', {places:places, currentuser:currentuser});
+        });
+      }
       }
   });
 });
+
+
+
+
+
+
+
+
+  // res.render("places/index", {currentuser:"", places:places});
+
+
+
 
 
 // NEW ROUTE (RESTRICTED TO LOGGED IN USER) //
 
 app.get('/places/new', routeMiddleware.ensureLoggedIn, function(req,res){
   var clear = "";
-  res.render("places/new", {err:clear});
+  res.render("places/new", {err:clear, currentuser:currentuser});
 });
 
 
@@ -147,7 +172,7 @@ app.post('/places', routeMiddleware.ensureLoggedIn, function(req,res){
 app.get('/places/:id/edit', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUser, function(req,res){
   db.Place.findById(req.params.id).populate('entries').exec(
      function (err, place) {
-         res.render("places/edit", {place:place});
+         res.render("places/edit", {place:place, currentuser:currentuser});
      });
 });
 
@@ -157,7 +182,11 @@ app.get('/places/:id/edit', routeMiddleware.ensureLoggedIn, routeMiddleware.ensu
 app.get('/places/:id', routeMiddleware.ensureLoggedIn, function(req,res){
   db.Place.findById(req.params.id).populate('entries').exec(
     function (err, place) {
-        res.render("places/show", {place:place});
+      if(err) {
+        res.render("errors/404");
+      } else {
+        res.render("places/show", {place:place, currentuser:currentuser});
+      } 
     });
 });
 
@@ -206,7 +235,7 @@ app.delete('/places/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensure
 
 app.get('/places/:place_id/entries', function(req,res){
   db.Place.findById(req.params.place_id).populate('entries').exec(function(err,place){
-    res.render("entries/index", {place:place});
+    res.render("entries/index", {place:place, currentuser:currentuser});
   });
 });
 
@@ -216,7 +245,7 @@ app.get('/places/:place_id/entries', function(req,res){
 app.get('/places/:place_id/entries/new', routeMiddleware.ensureLoggedIn, function(req,res){
   db.Place.findById(req.params.place_id,
     function (err, place) {
-      res.render("entries/new", {place:place, err:err});
+      res.render("entries/new", {place:place, err:err, currentuser:currentuser});
     });
 });
 
@@ -265,7 +294,7 @@ app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(r
 app.get('/entries/:id/edit', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUserE, 
   function(req,res){
   db.Entry.findById(req.params.id).populate('place').exec(function(err,entry){
-      res.render("entries/edit", {entry:entry, err:err});
+      res.render("entries/edit", {entry:entry, err:err, currentuser:currentuser});
     });
 });
 
@@ -289,22 +318,15 @@ app.put('/entries/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCo
 
 
 
+// SHOW ** NOT USED ** (RESTRICTED TO SPECIFIC LOGGED IN USER) //
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+app.get('/entries/:id', function(req,res){
+  db.Entry.findById(req.params.id)
+    .populate('place')
+    .exec(function(err,entry){
+      res.render("entries/show", {entry:entry, currentuser:currentuser});
+    });
+});
 
 
 
