@@ -271,6 +271,22 @@ app.get('/entries/:id/edit', routeMiddleware.ensureLoggedIn, routeMiddleware.ens
 
 
 
+// UPDATE ENTRY (RESTRICTED TO SPECIFIC LOGGED IN USER) //
+
+app.put('/entries/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUserE,
+  function(req,res){
+  db.Entry.findByIdAndUpdate(req.params.id, req.body.entry,
+     function (err, entry) {
+      // console.log("Comment!", comment);
+       if(err) {
+         res.render("entries/edit", {err:err, entry:entry});
+       }
+       else {
+         res.redirect("/places/" + entry.place + "/entries");
+       }
+     });
+});
+
 
 
 
