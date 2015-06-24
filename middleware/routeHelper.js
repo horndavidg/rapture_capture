@@ -21,6 +21,17 @@ var routeHelpers = {
     });
   },
 
+    ensureCorrectUserE: function(req, res, next) {
+    db.Entry.findById(req.params.id, function(err,entry){
+      if (entry.ownerId !== req.session.id) {
+        res.redirect('/');
+      }
+      else {
+       return next();
+      }
+    });
+  },
+
   // May require a second ensureCorrectUser depending on how many
   // resources we are validating...
 

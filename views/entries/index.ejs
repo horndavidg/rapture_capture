@@ -1,0 +1,57 @@
+<% include ../partials/headerUser %>
+
+<h1 class="lp_h1">You made it to the INDEX ENTRIES PAGE!</h1>
+<br>
+<h3 class="ui dividing header" id="indent">Journal Entries for <%= place.name%></h3>
+
+<table class="ui inverted red table">
+  <thead>
+    <tr>
+      <th><strong>Title:</strong></th>
+      <th><strong>Date:</strong></th>
+      <th><strong>Entry:</strong></th>
+      <th></th>
+      <th></th>
+
+    </tr>
+  </thead>
+  <tbody>
+<% place.entries.forEach(function(entry){ %>
+  <tr>
+   <td><strong><a class="linkTitle" href="/entries/<%= entry._id%>"><%= entry.name %></a></strong></td>
+   
+    <% if(!entry.date) { %>
+
+    <td><strong><%= "None" %></strong></td>
+
+    <% } else {
+
+    var date = entry.date.slice(5,7) + "/" + entry.date.slice(8,10) + "/" + entry.date.slice(0,4);
+    %>
+
+    <td><strong><%= date %></strong></td>
+
+      <% } %>
+
+    <td><%= entry.body %></td>
+    
+    <td><a class="linkTitle" href="/entries/<%= entry._id %>/edit"><strong>Edit</strong></a></td>
+
+     <td><form action="/entries/<%= entry._id%>?_method=DELETE" method="POST">
+      <input type="submit" value="Delete Entry!" class="ui inverted button">
+    </form></td>
+
+  </tr>
+<% })%>
+
+</tbody>
+</table>
+
+
+
+ <a id="indent" href="/places/<%= place._id%>/entries/new">Add a new Journal Entry!</a>
+
+
+
+
+<% include ../partials/footer %>

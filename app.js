@@ -108,7 +108,7 @@ app.get("/logout", function (req, res) {
 // INDEX ROUTE (RESTRICTED TO LOGGED IN USER) //
 
 app.get('/places', routeMiddleware.ensureLoggedIn, function(req,res){
-db.Place.find({}, function(err,places){
+db.Place.find({}).populate('entries').exec(function(err,places){
   if(err) {
     console.log(err);
     res.render("errors/500");
@@ -122,7 +122,8 @@ db.Place.find({}, function(err,places){
 // NEW ROUTE (RESTRICTED TO LOGGED IN USER) //
 
 app.get('/places/new', routeMiddleware.ensureLoggedIn, function(req,res){
-  res.render("places/new");
+  var clear = "";
+  res.render("places/new", {err:clear});
 });
 
 
@@ -200,10 +201,14 @@ app.delete('/places/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensure
 //******************* ENTRY ROUTES ***********************//
 
 
-// INDEX (RESTRICTED TO LOGGED IN USER) //
+// INDEX (RESTRICTED TO LOGGED IN USER) - Simply shows all of 
+// the Journal Entries for a given vacation.
 
-// Not sure if I'm going to need an index page for Journal Entries 
-// at this point!
+app.get('/places/:place_id/entries', function(req,res){
+  db.Place.findById(req.params.place_id).populate('entries').exec(function(err,place){
+    res.render("entries/index", {place:place});
+  });
+});
 
 
 // NEW (RESTRICTED TO LOGGED IN USER) //
@@ -211,8 +216,47 @@ app.delete('/places/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensure
 app.get('/places/:place_id/entries/new', routeMiddleware.ensureLoggedIn, function(req,res){
   db.Place.findById(req.params.place_id,
     function (err, place) {
-      res.render("entries/new", {place:place});
+      res.render("entries/new", {place:place, err:err});
     });
+});
+
+// CREATE (RESTRICTED TO LOGGED IN USER) //
+
+app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(req,res){
+  db.Entry.create(req.body.entry, function(error, entries){
+    if(error) {
+      // console.log(err); 
+    db.Place.findById(req.params.place_id,
+    function (err, place) {
+      res.render("entries/new", {place:place, err:error});
+    });
+
+            // TODO: Look at entering a custom error message!
+
+    }
+    
+    else {
+      
+      db.Place.findById(req.params.place_id,function(err,place){
+        if(err) {
+          
+          res.render("entries/new", {place:place, err:err});
+
+           // TODO: Look at entering a custom error message!
+              
+        } else {
+
+        place.entries.push(entries);
+        entries.place = place._id;
+        entries.ownerId = req.session.id;
+        entries.save();
+        place.save();
+        console.log(entries);
+        res.redirect("/places/"+ req.params.place_id +"/entries");
+        }
+      });
+    }
+  });
 });
 
 
@@ -226,6 +270,43 @@ app.get('/places/:place_id/entries/new', routeMiddleware.ensureLoggedIn, functio
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// DESTROY (RESTRICTED TO SPECIFIC LOGGED IN USER) //
+
+app.delete('/entries/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUserE,
+  function(req,res){
+  db.Entry.findByIdAndRemove(req.params.id,
+      function (err, entry) {
+        if(err) {
+          console.log(err);
+          res.render("entries/edit");
+        }
+        else {
+          res.redirect("/places/" + entry.place  + "/entries");
+        }
+      });
+});
+
+
+
+
+
+
+// ********************************************************
 
 
 // CATCH ALL //

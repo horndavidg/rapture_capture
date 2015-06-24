@@ -8,7 +8,7 @@ var entrySchema = new mongoose.Schema ({
                           type: String, 
                           required: true
                         },
-                        date: Date,
+                        date: String,
                         image: [String],
                         ownerId: String,
                         // Used for editing and deleting entries
