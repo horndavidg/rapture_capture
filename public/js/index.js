@@ -120,10 +120,10 @@ return '<tr><td><strong><a class="linkTitle" href="/places/' + place._id + '">' 
 $('#newlocation').click(function(e) {
     e.preventDefault();
 
-    var html = '<form action="/places" method="POST" id="newForm"><div class="ui form">' +
+    var html = '<form action="/show" method="POST" id="newForm"><div class="ui form">' +
     '<div class="ui info message"><div class="header">Where did you Go?</div><ul class="list">' +
     '<li>Let me help!</li></ul></div><div class="fields"><div class="six wide field">' +
-    '<label>I went to:</label><input placeholder="Enter closest location" type="text" name="place[location]">' +
+    '<label>I went to:</label><input placeholder="Enter closest location" id="location" type="text" name="location">' +
       '</div></div><br><div><input type="submit" value="Look for It" class="ui primary button">' +
      '</div></div></form><br>';
 
@@ -131,43 +131,43 @@ $('#newlocation').click(function(e) {
 
     $('.setpoint').after(html);
 
-// //     $('#newlocationform').submit(function(e) {
-// //       e.preventDefault();
+//     $('#newlocationform').submit(function(e) {
+//       e.preventDefault();
       
-// //       // keeps the page from refreshing which is the default for
-// //       // form submission.
+//       // keeps the page from refreshing which is the default for
+//       // form submission.
 
-//       var address = $('#address').val();
-//       var lat = $('#lat').val();
-//       var long = $('#long').val();
-//       var data = {place: {address: address, lat: lat, long: long}};
+      var location = $('#location').val();
+      // var lat = $('#lat').val();
+      // var long = $('#long').val();
+      var data = {place: {location:location}};
 
-//       $.ajax({
-//         type: 'POST',
-//         url: '/places',
-//         data: data,
-//         dataType: 'json'
-//       }).done(function(data) {
+      $.ajax({
+        type: 'POST',
+        url: '/show',
+        data: data,
+        dataType: 'json'
+      }).done(function(data) {
           
-//             var myLatlng = new google.maps.LatLng(data.place.lat,data.place.long);
+          //   var myLatlng = new google.maps.LatLng(data.place.lat,data.place.long);
 
-//             var marker = new google.maps.Marker({
+          //   var marker = new google.maps.Marker({
 
-//                       position: myLatlng,
-//                       map: map,
-//                       title: data.place.address
+          //             position: myLatlng,
+          //             map: map,
+          //             title: data.place.address
                 
-//                  });
+          //        });
 
-//           var html = placeHtml(data.place);
-//           $('#table').append(html);
+          // var html = placeHtml(data.place);
+          // $('#table').append(html);
 
-//          $('#newlocationform').remove();
-//          // removes the form after JSON is returned. This line
-//          // has to be in place prior to the form populating!
-//       });     
+         $('#newlocationform').remove();
+         // removes the form after JSON is returned. This line
+         // has to be in place prior to the form populating!
+      });     
 
-//    });
+  
 
  });
 

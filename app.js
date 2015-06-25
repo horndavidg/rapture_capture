@@ -102,6 +102,71 @@ app.get("/logout", function (req, res) {
 var currentuser;
 // used for nav bar
 
+//******************* SHOW SEARCH ROUTES *************************//
+
+app.post('/show', function(req,res){
+
+ var loc = req.body.location;
+
+request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + 
+      req.body.location, function (error, response, body) {
+
+          if (error) {
+    
+          console.log("Error!  Request failed - " + error);
+              res.render("errors/500");
+  
+          } else if (!error && response.statusCode === 200) {
+
+         console.log(body);
+
+          var info = JSON.parse(body);
+         
+          lat = info.results[0].geometry.location.lat;
+          lng = info.results[0].geometry.location.lng;
+        
+          var local = {location:loc, lat:lat, long:lng};
+
+          // var place = new db.Place(local);
+          // // place.ownerId = req.session.id;
+          
+          // place.save(function(err,place){
+
+            console.log("LOCAL:",local);
+   
+          res.format({
+           
+            'text/html': function(){
+                  res.render('show', {place:local, currentuser:currentuser});
+                },
+     
+              'application/json': function(){
+                    res.send({place:local});
+                },
+              'default': function() {
+              
+                res.status(406).send('Not Acceptable');
+
+                    }
+                 });
+               // });
+              
+
+}
+
+
+
+
+
+
+
+
+
+
+});
+});
+
+
 
 
 //******************* PLACE ROUTES *************************//
