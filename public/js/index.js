@@ -115,31 +115,20 @@ return '<tr><td><strong><a class="linkTitle" href="/places/' + place._id + '">' 
 
   loadPlaces();
 
-// // Form for addind a new location to the database
+// Form for addind a new location to the database
 
 // $('#newlocation').click(function(e) {
 //     e.preventDefault();
 
-//     var html = '<br /><form id="newlocationform" action="/places" method="POST">' +
-//                '<div class="form-group">' + 
-//                '<label for="address">Address: </label><input type="text" class="form-control" name="place[address]" id="address" autofocus>' +
-//                '</div>' +
-//                 '<div class="form-group">' + 
-//                '<label for="lat">Latitude: </label><input type="text" class="form-control" name="place[lat]" id="lat">' +
-//                '</div>' +
-//                 '<div class="form-group">' + 
-//                '<label for="long">Longitude: </label><input type="text" class="form-control" name="place[long]" id="long">' +
-//                '</div>' +
-//                '<input type="submit" value="Add" class="btn btn-lg btn-success">' +
-//                '</form>';
+//     var html = '<br />;
 
 //     $('.setpoint').after(html);
 
-//     $('#newlocationform').submit(function(e) {
-//       e.preventDefault();
+// //     $('#newlocationform').submit(function(e) {
+// //       e.preventDefault();
       
-//       // keeps the page from refreshing which is the default for
-//       // form submission.
+// //       // keeps the page from refreshing which is the default for
+// //       // form submission.
 
 //       var address = $('#address').val();
 //       var lat = $('#lat').val();
@@ -173,10 +162,10 @@ return '<tr><td><strong><a class="linkTitle" href="/places/' + place._id + '">' 
 
 //    });
 
-//  });
+ // });
 
 
 
-// // END OF THE UPON LOAD TAG //
-// // ************************************************************
+// END OF THE UPON LOAD TAG //
+// ************************************************************
 });
