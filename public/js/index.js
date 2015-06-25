@@ -1,73 +1,73 @@
-// $(function() {
+$(function() {
   
-//   var map;
+  var map;
   
-//   function initialize() {
-//     // Puts the Google Map on the page
+  function initialize() {
+    // Puts the Google Map on the page
 
-//     map = new google.maps.Map(document.getElementById('map-canvas'), {
-//       zoom: 2,
-//       center: {lat: 39.7643389, lng: -104.8551114}
-//     });
+    map = new google.maps.Map(document.getElementById('map-canvas'), {
+      zoom: 2,
+      center: {lat: 39.7643389, lng: -104.8551114}
+    });
 
 
-//     var mapDiv = document.getElementById('map-canvas');
+    var mapDiv = document.getElementById('map-canvas');
 
-//     google.maps.event.addListener(map, 'click', addMarker);
+    google.maps.event.addListener(map, 'click', addMarker);
   
-//   }
+  }
 
 
-//   function addMarker(event) {
-//   	   // This adds a marker to the map when you click on a select
-//        // spot, then sends a ajax call and uses the Google API to 
-//        // populate a location name and adds it to the database.
+  function addMarker(event) {
+  	   // This adds a marker to the map when you click on a select
+       // spot, then sends a ajax call and uses the Google API to 
+       // populate a location name and adds it to the database.
 
-//         var lat = event.latLng.A;
-//         var long = event.latLng.F;
-//         var address = "";
+  //       var lat = event.latLng.A;
+  //       var long = event.latLng.F;
+  //       var address = "";
      
-//       var data = {place: {address: address, lat: lat, long: long}};
+  //     var data = {place: {address: address, lat: lat, long: long}};
 
-//       $.ajax({
-//         type: 'POST',
-//         url: '/places',
-//         data: data,
-//         dataType: 'json'
-//       }).done(function(data) {
+  //     $.ajax({
+  //       type: 'POST',
+  //       url: '/places',
+  //       data: data,
+  //       dataType: 'json'
+  //     }).done(function(data) {
           
-//             var myLatlng = new google.maps.LatLng(data.place.lat,data.place.long);
+  //           var myLatlng = new google.maps.LatLng(data.place.lat,data.place.long);
 
-//             var marker = new google.maps.Marker({
+  //           var marker = new google.maps.Marker({
 
-//                       position: myLatlng,
-//                       map: map,
-//                       title: data.place.address
+  //                     position: myLatlng,
+  //                     map: map,
+  //                     title: data.place.address
                 
-//                  });
+  //                });
 
 
-//           var html = placeHtml(data.place);
-//           $('#table').append(html);
+  //         var html = placeHtml(data.place);
+  //         $('#table').append(html);
 
-//   });
+  // });
 
-//     console.log(event.latLng.A);
-//   	console.log(event.latLng.F);
+    console.log(event.latLng.A);
+  	console.log(event.latLng.F);
 
-//   	// Add your code to add markers here ***********************
+  	// Add your code to add markers here ***********************
 
-//       // var myLatlng = new google.maps.LatLng(event.latLng.A,event.latLng.F);
+      // var myLatlng = new google.maps.LatLng(event.latLng.A,event.latLng.F);
 
-//       // var marker = new google.maps.Marker({
-//       //       position: myLatlng,
-//       //       map: map,
-//       //       title: 'Test!'
-//       // });
+      // var marker = new google.maps.Marker({
+      //       position: myLatlng,
+      //       map: map,
+      //       title: 'Test!'
+      // });
 
-// }
+}
 
-//   initialize();
+  initialize();
 
 //   function loadPlaces() {
 //       // Populates the list of places visited and puts markers
@@ -171,4 +171,4 @@
 
 // // END OF THE UPON LOAD TAG //
 // // ************************************************************
-// });
+});
