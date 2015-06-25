@@ -53,7 +53,16 @@
         <input value="<%= place.image[2]%>" type="text" name="place[[image]]">
       </div>
 	</div>
-    
+    <div class="fields">
+    <div class="four wide field">
+        <label>Latitude:</label>
+        <input value="<%= place.lat%>" type="text" name="place[lat]">
+      </div>
+      <div class="four wide field">
+        <label>Longitude:</label>
+        <input value="<%= place.long%>" type="text" name="place[long]">
+      </div>
+    </div>
    <div>
        <input type="submit" value="Update It" class="ui primary button">
   </div>

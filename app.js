@@ -117,18 +117,55 @@ db.Place.find({'ownerId':req.session.id}).populate('entries').populate('author')
     res.render("errors/500");
 } else {
       if(req.session.id === null){
-        res.render('places/index', {places:places, currentuser:""});
+        res.redirect('/');
       } else {
         db.User.findById(req.session.id, function(err,user){
-          
           currentuser = user.username;
           // sets the current user variable to the current user that is loged in
+        res.format({
+           'text/html': function(){
+            res.render("places/index", {places:places, currentuser:currentuser});
+              },
+          'application/json': function(){
+          res.send({ places:places, currentuser:currentuser});
+            },
+         'default': function() {
+          // log the request and respond with 406
+          res.status(406).send('Not Acceptable');
+        }
+      });
 
-          res.render('places/index', {places:places, currentuser:currentuser});
+          // res.render('places/index', {places:places, currentuser:currentuser});
         });
       }
       }
   });
+
+// db.Place.find({'ownerId':req.session.id}, function(err,places){
+// res.format({
+//         'text/html': function(){
+//         res.render("places/index", {places:places});
+//               },
+//       'application/json': function(){
+//         res.send({ places:places});
+//       },
+//       'default': function() {
+//         // log the request and respond with 406
+//         res.status(406).send('Not Acceptable');
+//         }
+//       });
+
+
+
+
+
+
+// });
+
+
+
+
+
 });
 
 

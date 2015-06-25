@@ -1,5 +1,20 @@
-ejs table build for index.ejs of places:
+<% include ../partials/headerIndex %>
 
+
+<div id="map-canvas"></div>
+
+<h3 class="ui dividing header" id="indent">Travel Log:</h3>
+
+<table class="ui inverted red table">
+  <thead>
+    <tr>
+      <th><strong>Vacation:</strong></th>
+      <th><strong>Dates:</strong></th>
+         <th><strong>Journal Entries:</strong></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
 <% places.forEach(function(place){ %>
   <tr>
    <td><strong><a class="linkTitle" href="/places/<%= place._id%>"><%= place.name %></a></strong></td>
@@ -17,4 +32,14 @@ ejs table build for index.ejs of places:
   </tr>
 <% })%>
 
-***********************************************************
+</tbody>
+</table>
+
+
+
+ <a id="indent" href="/places/new">Add a new Place!</a>
+
+
+
+
+<% include ../partials/footer %>

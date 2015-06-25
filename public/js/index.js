@@ -69,43 +69,51 @@ $(function() {
 
   initialize();
 
-//   function loadPlaces() {
-//       // Populates the list of places visited and puts markers
-//       // on the map for each location.
+  function loadPlaces() {
+      // Populates the list of places visited and puts markers
+      // on the map for each location.
 
-//     $.getJSON("/places").done(function(data) {
+    $.getJSON("/places").done(function(data) {
         
-//         data.places.forEach(function(place) {
+        data.places.forEach(function(place) {
 
-//             var myLatlng = new google.maps.LatLng(place.lat,place.long);
+            var myLatlng = new google.maps.LatLng(place.lat,place.long);
 
-//             var marker = new google.maps.Marker({
+            var marker = new google.maps.Marker({
 
-//                       position: myLatlng,
-//                       map: map,
-//                       title: place.address
+                      position: myLatlng,
+                      map: map,
+                      title: place.name
                 
-//                  });
+                 });
 
-//             var html = placeHtml(place);
-//             $('#table').append(html);
-//         });
+            var html = placeHtml(place);
+            $('#table').append(html);
+        });
         
-//     });
-//   }
+    });
+  }
 
-// function placeHtml(place) {
-//     // Function used for formatting when appending data to
-//     // the index page. 
+function placeHtml(place) {
+    // Function used for formatting when appending data to
+    // the index page. 
 
-// return '<tr data-id="' + place._id + '"><td><a href="/places/' + place._id + '/">' + place.address + 
-//            '</a></td><td>"' + place.lat + '"</td><td>"' + place.long + '"</td><td><a id="editThisLocation" href="/places/' + place._id + 
-//            '/edit">Edit</a></td><td><form id="deleteLocation" action="/places/' + place._id + 
-//            '?_method=DELETE" method="POST"><input type="submit" value="X" class="btn btn-xs btn-danger"></form></td></tr>';
+var start = place.startdate.slice(5,7) + "/" + place.startdate.slice(8,10) + "/" + place.startdate.slice(0,4);
+var end = place.enddate.slice(5,7) + "/" + place.enddate.slice(8,10) + "/" + place.enddate.slice(0,4);
 
-//   }
+return '<tr><td><strong><a class="linkTitle" href="/places/' + place._id + '">' + place.name + 
+'</a></strong></td><td><strong>' + start + '</strong> - to - <strong>' + end + '</strong></td><td><a href="/places/' + place._id + 
+'/entries"> <button class="ui inverted button">' + place.entries.length + '</button></a></td><td><a href="/places/' + place._id + 
+'/edit"><button class="ui inverted button">Edit</button></a></td>';
 
-//   loadPlaces();
+
+
+
+
+
+  }
+
+  loadPlaces();
 
 // // Form for addind a new location to the database
 
