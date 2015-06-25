@@ -37,13 +37,13 @@ app.use(session({
 
 // ROOT (PUBLIC) //
 
-app.get('/', function(req,res){
+app.get('/', routeMiddleware.preventLoginSignup, function(req,res){
   res.render("users");
 });
 
 // USER NEEDS TO SIGN UP! //
 
-app.get('/signup', routeMiddleware.preventLoginSignup ,function(req,res){
+app.get('/signup', routeMiddleware.preventLoginSignup, function(req,res){
     var clear = "";
     res.render("users/signup", {err:clear});
     // added clean err var to render page
@@ -154,25 +154,10 @@ db.Place.find({'ownerId':req.session.id}).populate('entries').populate('author')
 //         res.status(406).send('Not Acceptable');
 //         }
 //       });
-
-
-
-
-
-
 // });
 
 
-
-
-
 });
-
-
-
-
-
-
 
 
   // res.render("places/index", {currentuser:"", places:places});
@@ -291,13 +276,11 @@ app.get('/places/:place_id/entries/new', routeMiddleware.ensureLoggedIn, functio
 app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(req,res){
   db.Entry.create(req.body.entry, function(error, entries){
     if(error) {
-      // console.log(err); 
+      error = "Please make sure all the required fields are filled";
     db.Place.findById(req.params.place_id,
     function (err, place) {
-      res.render("entries/new", {place:place, err:error});
+      res.render("entries/new", {place:place, err:error, currentuser:currentuser});
     });
-
-            // TODO: Look at entering a custom error message!
 
     }
     
@@ -306,7 +289,7 @@ app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(r
       db.Place.findById(req.params.place_id,function(err,place){
         if(err) {
           
-          res.render("entries/new", {place:place, err:err});
+          res.render("entries/new", {place:place, err:err, currentuser:currentuser});
 
            // TODO: Look at entering a custom error message!
               

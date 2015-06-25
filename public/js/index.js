@@ -117,12 +117,19 @@ return '<tr><td><strong><a class="linkTitle" href="/places/' + place._id + '">' 
 
 // Form for addind a new location to the database
 
-// $('#newlocation').click(function(e) {
-//     e.preventDefault();
+$('#newlocation').click(function(e) {
+    e.preventDefault();
 
-//     var html = '<br />;
+    var html = '<form action="/places" method="POST" id="newForm"><div class="ui form">' +
+    '<div class="ui info message"><div class="header">Where did you Go?</div><ul class="list">' +
+    '<li>Let me help!</li></ul></div><div class="fields"><div class="six wide field">' +
+    '<label>I went to:</label><input placeholder="Enter closest location" type="text" name="place[location]">' +
+      '</div></div><br><div><input type="submit" value="Look for It" class="ui primary button">' +
+     '</div></div></form><br>';
 
-//     $('.setpoint').after(html);
+
+
+    $('.setpoint').after(html);
 
 // //     $('#newlocationform').submit(function(e) {
 // //       e.preventDefault();
@@ -162,10 +169,38 @@ return '<tr><td><strong><a class="linkTitle" href="/places/' + place._id + '">' 
 
 //    });
 
- // });
+ });
 
 
 
 // END OF THE UPON LOAD TAG //
 // ************************************************************
 });
+
+
+
+// Version 1: Search for a location single page form on the 
+// places index page.
+
+// <form action="/places" method="POST" id="newForm">  
+// <div class="ui form">
+//     <div class="ui info message">
+//       <div class="header">Where did you Go?</div>
+//       <ul class="list">
+//         <li>Let me help!</li>
+//       </ul>
+//     </div>
+//     <div class="fields">
+//       <div class="six wide field">
+//         <label>I went to:</label>
+//         <input placeholder="Enter closest location" type="text" name="place[location]">
+//       </div>
+    
+//        </div>
+       
+    
+//    <div>
+//        <input type="submit" value="Look for It" class="ui primary button">
+//   </div>
+//   </div>
+//   </form>
