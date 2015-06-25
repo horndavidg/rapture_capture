@@ -118,7 +118,7 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" +
   
           } else if (!error && response.statusCode === 200) {
 
-         console.log(body);
+         // console.log(body);
 
           var info = JSON.parse(body);
          
@@ -127,12 +127,14 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" +
         
           var local = {location:loc, lat:lat, long:lng};
 
+          // Possibly add for submitting search results to db
+
           // var place = new db.Place(local);
-          // // place.ownerId = req.session.id;
+          // place.ownerId = req.session.id;
           
           // place.save(function(err,place){
 
-            console.log("LOCAL:",local);
+          
    
           res.format({
            
@@ -152,17 +154,7 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" +
                // });
               
 
-}
-
-
-
-
-
-
-
-
-
-
+      }
 });
 });
 
@@ -192,7 +184,7 @@ db.Place.find({'ownerId':req.session.id}).populate('entries').populate('author')
             res.render("places/index", {places:places, currentuser:currentuser});
               },
           'application/json': function(){
-          res.send({ places:places, currentuser:currentuser});
+          res.send({places:places,currentuser:currentuser});
             },
          'default': function() {
           // log the request and respond with 406
@@ -246,9 +238,15 @@ app.get('/places/new', routeMiddleware.ensureLoggedIn, function(req,res){
 app.post('/places', routeMiddleware.ensureLoggedIn, function(req,res){
   var place = new db.Place(req.body.place);
     place.ownerId = req.session.id;
+    console.log("PLACE", place);
     place.save(function(err,place){
-      // console.log(place);
-      res.redirect("/places");
+       if(err) {
+        console.log(err);
+        // res.render("errors/500");
+      } else {
+        res.redirect("/places"); 
+      }
+     
     });
 });
 
