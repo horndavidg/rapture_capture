@@ -1,6 +1,59 @@
-<% include ./partials/headerUser %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+  <title>Rapture Capture</title>
+  
+  <!-- Latest compiled and minified CSS -->
+ 
+  <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.3/semantic.css'>
 
-<h1 class="lp_h1">Welcome to <%= place.location%>!</h1>
+
+   <!-- Bringing in CSS Style Sheet -->
+
+  <link rel="stylesheet" href='/css/style.css'>
+
+    <!-- Bringing in jquery -->
+  
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js'></script>
+
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.3/semantic.js'></script> 
+ 
+ <!-- Bringing in JavaScript File -->
+ 
+ <script type="text/javascript" src="/js/show.js"></script> 
+
+</head>
+
+<body class= "container">
+  <div class="ui blue inverted large menu">
+    
+    <a class="item" href="/places">
+       <i class="home icon"></i> <span id="appName">Rapture Capture</span>
+    </a>
+
+   <% if(currentuser !== undefined){ %>
+
+    <div class="right menu">
+       <a class="item" href="/logout">
+        <i class="user icon"></i>Logout: <%= currentuser%>
+      </a>
+    </div>
+
+    <% } else { %>
+
+    <div class="right menu">
+       
+       <a class="item" href="/logout">
+        <i class="user icon"></i>Logout
+      </a>
+
+    </div>
+    <% } %>
+  </div>
+
+<h1 class="lp_h1">This is <%= place.location%>!</h1>
 
 
 <h3 id="indent">Latitude: <%= place.lat%></h3>
@@ -38,8 +91,20 @@
       </div>
       </div>
     </div>
+<br>
+<br>
 
-<div class="ui two column centered grid">
+<div id="center">
+<form id="localattractions" action="/attractions" method="POST">
+<input type="hidden" value="<%= place.location%>" name="location" id="location">
+<input type="submit"  class="ui inverted green button" value="See Local Attractions!">
+</form>
+</div>
+<br>
+<div id="placehere"></div>
+<br>
+<div class="ui two column centered grid"> 
+
     <div class="four column centered row">
       <div class="column">
         
@@ -67,7 +132,7 @@
 
 <form action="/places" method="POST" id="newForm">  
     <input type="hidden" name="place[name]" value="<%= place.location%>">
-    <input type="hidden" name="place[location]" value="<%= place.location%>">
+    <input type="hidden" name="place[location]" value="<%= place.location%>" id="thislocation">
     <input type="hidden" name="place[lat]" value="<%= place.lat%>">
     <input type="hidden" name="place[startdate]" value="    -  -  "> 
     <input type="hidden" name="place[enddate]" value="    -  -  "> 

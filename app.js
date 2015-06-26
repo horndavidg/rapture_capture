@@ -7,7 +7,8 @@ morgan = require("morgan"),
 favicon = require('serve-favicon'),
 loginMiddleware = require("./middleware/loginHelper");
 routeMiddleware = require("./middleware/routeHelper");
- 
+process.env = require('dotenv');
+
 var request = require('request');
 
 var db = require("./models");
@@ -120,6 +121,7 @@ app.get('/show', routeMiddleware.ensureLoggedIn, function(req,res){
 
 ////////////// POST TO SHOW PAGE ROUTE //////////////
 
+
 app.post('/show', function(req,res){
 
  var loc = req.body.location;
@@ -192,40 +194,11 @@ request.get("http://api.openweathermap.org/data/2.5/weather?q=" +
                                      });
 
 
-                        
-
-
-
-
-
-
-
-
-
                         } else {
 
+// TODO: >> Work on ERROR HANDLING for bad search results...
 
 
-
-
-
-
-
-// TODO: This is where I will enter in the Expedia API...
-// Look for an API to produce pictures of the given location
-// >> Work on ERROR HANDLING for bad search results...
-
-
-
-
-
-
-
-
-
-
-
-   
           res.format({
            
             'text/html': function(){
@@ -294,6 +267,9 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.bo
             // });
           }
 });
+
+
+
 
 
 

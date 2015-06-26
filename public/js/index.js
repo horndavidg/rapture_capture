@@ -38,17 +38,6 @@ $(function() {
         dataType: 'json'
       }).done(function(data) {
 
-            // var myLatlng = new google.maps.LatLng(data.place.lat,data.place.long);
-
-            // var marker = new google.maps.Marker({
-
-            //           position: myLatlng,
-            //           map: map,
-            //           title: data.place.address
-                
-            //      });
-
-
 
           var html = placeHelp(data.place);
           $('#searchhelp').append(html);
@@ -138,26 +127,25 @@ return '<tr><td><strong><a class="linkTitle" href="/places/' + place._id + '">' 
 $('#newlocation').click(function(e) {
     e.preventDefault();
 
+
+     $('#newlocation').hide();
+
+
     var html = '<form action="/show" method="POST" id="newForm"><div class="ui form">' +
-    '<div class="ui info message"><div class="header">Where did you Go?</div><ul class="list">' +
-    '<li>Let me help!</li></ul></div><div class="fields"><div class="six wide field">' +
+    '<div class="ui info message"><div class="header">Look up a place you have been before or maybe the location for your next adventure!' +
+    '</div></div><div class="fields"><div class="six wide field">' +
     '<label>I went to:</label><input placeholder="Enter closest location" id="location" type="text" name="location">' +
       '</div></div><br><div><input type="submit" value="Look for It" class="ui primary button">' +
      '</div></div></form><br>';
 
+     // Form for entering a location to search for...
 
 
     $('.setpoint').after(html);
 
-//     $('#newlocationform').submit(function(e) {
-//       e.preventDefault();
-      
-//       // keeps the page from refreshing which is the default for
-//       // form submission.
 
       var location = $('#location').val();
-      // var lat = $('#lat').val();
-      // var long = $('#long').val();
+     
       var data = {place: {location:location}};
 
       $.ajax({
@@ -167,58 +155,25 @@ $('#newlocation').click(function(e) {
         dataType: 'json'
       }).done(function(data) {
           
-          //   var myLatlng = new google.maps.LatLng(data.place.lat,data.place.long);
-
-          //   var marker = new google.maps.Marker({
-
-          //             position: myLatlng,
-          //             map: map,
-          //             title: data.place.address
-                
-          //        });
-
-          // var html = placeHtml(data.place);
-          // $('#table').append(html);
-
+      
          $('#newlocationform').remove();
-         // removes the form after JSON is returned. This line
-         // has to be in place prior to the form populating!
+        
       });     
-
-  
-
  });
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 // END OF THE UPON LOAD TAG //
 // ************************************************************
 });
-
-
-
-// Version 1: Search for a location single page form on the 
-// places index page.
-
-// <form action="/places" method="POST" id="newForm">  
-// <div class="ui form">
-//     <div class="ui info message">
-//       <div class="header">Where did you Go?</div>
-//       <ul class="list">
-//         <li>Let me help!</li>
-//       </ul>
-//     </div>
-//     <div class="fields">
-//       <div class="six wide field">
-//         <label>I went to:</label>
-//         <input placeholder="Enter closest location" type="text" name="place[location]">
-//       </div>
-    
-//        </div>
-       
-    
-//    <div>
-//        <input type="submit" value="Look for It" class="ui primary button">
-//   </div>
-//   </div>
-//   </form>
