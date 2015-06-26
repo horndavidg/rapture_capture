@@ -13,19 +13,27 @@
     <div class="ui info message">
       <div class="header">Add your favorite or most recent vacation so you can start preserving the memories with Rapture Capture.</div>
       <ul class="list">
-        <li>List Items?</li>
+        <li>Please make sure you include a name and location!</li>
       </ul>
     </div>
     <div class="fields">
       <div class="six wide field">
+       <div class="required field">
         <label>I went to:</label>
         <input placeholder="Name or Nickname" type="text" name="place[name]">
+        </div>
       </div>
      <div class="eight wide field">
+      <div class="required field">
         <label>Location:</label>
         <input placeholder="Closest Address" type="text" name="place[location]">
-      </div>
-       </div>
+        </div>
+        </div>
+        </div>
+
+       <% if(err) { %>
+        <h4><font color="red"><%= err%></font></h4>
+        <% } %>
        
        <div class="fields">
        <div class="four wide field">

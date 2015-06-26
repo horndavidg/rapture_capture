@@ -104,9 +104,29 @@ var currentuser;
 
 //******************* SHOW SEARCH ROUTES *************************//
 
+
+var local;
+
+// GET SHOW PAGE ROUTE //
+
+app.get('/show', routeMiddleware.ensureLoggedIn, function(req,res){
+      if(err) {
+        res.render("errors/404");
+      } else {
+        res.render("show", {place:local, currentuser:currentuser});
+      } 
+   });
+
+
+// POST TO SHOW PAGE ROUTE //
+
 app.post('/show', function(req,res){
 
  var loc = req.body.location;
+
+
+if (req.body.location !== "") {
+
 
 request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + 
       req.body.location, function (error, response, body) {
@@ -133,12 +153,11 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" +
           // place.ownerId = req.session.id;
           
           // place.save(function(err,place){
-
-          
    
           res.format({
            
             'text/html': function(){
+                  // res.redirect("/show");
                   res.render('show', {place:local, currentuser:currentuser});
                 },
      
@@ -151,11 +170,57 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" +
 
                     }
                  });
-               // });
-              
-
+               // });       
       }
 });
+
+} else if (req.body.location === "") {
+
+
+request.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.lat + "," + req.body.long, function (error, response, body) {
+
+          if (error) {
+    
+              console.log("Error!  Request failed - " + error);
+              res.render("errors/500");
+  
+          } else if (!error && response.statusCode === 200) {
+
+          var info = JSON.parse(body);
+
+          console.log("THIS IS INFO", info);
+
+
+          lat = info.results[0].geometry.location.lat;
+          lng = info.results[0].geometry.location.lng;
+          loc = info.results[0].formatted_address;
+
+          var local = {location:loc, lat:lat, long:lng};
+
+          // var place = new db.Place(local);
+          // place.ownerId = req.session.id;
+          
+          // place.save(function(err,place){
+   
+          res.format({
+            
+            'text/html': function(){
+                 res.render('show', {place:local, currentuser:currentuser});
+                },
+     
+              'application/json': function(){
+                    res.send({place:local});
+                },
+              'default': function() {
+              
+                res.status(406).send('Not Acceptable');
+
+                    }
+                 });
+                }
+              });
+            // });
+          }
 });
 
 
@@ -226,8 +291,8 @@ db.Place.find({'ownerId':req.session.id}).populate('entries').populate('author')
 // NEW ROUTE (RESTRICTED TO LOGGED IN USER) //
 
 app.get('/places/new', routeMiddleware.ensureLoggedIn, function(req,res){
-  var clear = "";
-  res.render("places/new", {err:clear, currentuser:currentuser});
+  var err = " ";
+  res.render("places/new", {err:err, currentuser:currentuser});
 });
 
 
@@ -235,21 +300,77 @@ app.get('/places/new', routeMiddleware.ensureLoggedIn, function(req,res){
 
 // CREATE (RESTRICTED TO LOGGED IN USER) //
 
-app.post('/places', routeMiddleware.ensureLoggedIn, function(req,res){
-  var place = new db.Place(req.body.place);
-    place.ownerId = req.session.id;
-    console.log("PLACE", place);
-    place.save(function(err,place){
-       if(err) {
-        console.log(err);
-        // res.render("errors/500");
-      } else {
-        res.redirect("/places"); 
-      }
-     
-    });
-});
 
+app.post('/places', routeMiddleware.ensureLoggedIn, function(req,res){
+  
+  request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + 
+       req.body.place.location, function (error, response, body) {
+
+if (error) {
+    
+          console.log("Error!  Request failed - " + error);
+          res.render("errors/500");
+  
+} else if (!error && response.statusCode === 200) {
+          
+           var info = JSON.parse(body);
+          console.log(">>>>>>>>>>",info);
+           if (info.status === 'ZERO_RESULTS') {
+                    var lost = new db.Place(req.body.place);
+
+                    lost.ownerId = req.session.id;
+                    lost.save(function(err,place){
+       
+                  if(err) {
+                      error = "Please GO BACK and make sure all the required fields are filled";
+                      console.log(err);
+                      res.render("places/new", {err:error, currentuser:currentuser});
+                    } else {
+                        res.redirect("/places"); 
+                   }
+                 });
+
+           } else {
+
+           lat = info.results[0].geometry.location.lat;
+           lng = info.results[0].geometry.location.lng;
+
+           var place = new db.Place(req.body.place);
+
+           place.ownerId = req.session.id;
+           place.lat = lat;
+           place.long = lng;
+           place.save(function(err,place){
+       
+                  if(err) {
+                      error = "Please GO BACK and make sure all the required fields are filled";
+                      console.log(err);
+                      res.render("places/new", {err:error, currentuser:currentuser});
+                    } else {
+                        res.redirect("/places"); 
+                   }
+              });
+            }
+            }    
+        });
+      });
+
+// WORKING SIMPLE VERSION //
+// app.post('/places', routeMiddleware.ensureLoggedIn, function(req,res){
+//   var place = new db.Place(req.body.place);
+//     place.ownerId = req.session.id;
+//     console.log("PLACE", place);
+//     place.save(function(err,place){
+//        if(err) {
+//         error = "Please GO BACK and make sure all the required fields are filled";
+//         console.log(err);
+//         res.render("places/new", {err:error, currentuser:currentuser});
+//       } else {
+//         res.redirect("/places"); 
+//       }
+     
+//     });
+// });
 
 
 // EDIT (RESTRICTED TO SPECIFIC LOGGED IN USER) //

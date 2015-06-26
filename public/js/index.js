@@ -23,34 +23,37 @@ $(function() {
        // spot, then sends a ajax call and uses the Google API to 
        // populate a location name and adds it to the database.
 
-  //       var lat = event.latLng.A;
-  //       var long = event.latLng.F;
-  //       var address = "";
+          $('#searchhelpbox').remove();
+
+        var lat = event.latLng.A;
+        var long = event.latLng.F;
+        var location = "";
      
-  //     var data = {place: {address: address, lat: lat, long: long}};
+   var data = {location:location, lat:lat, long:long};
 
-  //     $.ajax({
-  //       type: 'POST',
-  //       url: '/places',
-  //       data: data,
-  //       dataType: 'json'
-  //     }).done(function(data) {
-          
-  //           var myLatlng = new google.maps.LatLng(data.place.lat,data.place.long);
+      $.ajax({
+        type: 'POST',
+        url: '/show',
+        data: data,
+        dataType: 'json'
+      }).done(function(data) {
 
-  //           var marker = new google.maps.Marker({
+            // var myLatlng = new google.maps.LatLng(data.place.lat,data.place.long);
 
-  //                     position: myLatlng,
-  //                     map: map,
-  //                     title: data.place.address
+            // var marker = new google.maps.Marker({
+
+            //           position: myLatlng,
+            //           map: map,
+            //           title: data.place.address
                 
-  //                });
+            //      });
 
 
-  //         var html = placeHtml(data.place);
-  //         $('#table').append(html);
 
-  // });
+          var html = placeHelp(data.place);
+          $('#searchhelp').append(html);
+
+  });
 
     console.log(event.latLng.A);
   	console.log(event.latLng.F);
@@ -68,6 +71,17 @@ $(function() {
 }
 
   initialize();
+
+function placeHelp(place) {
+   
+return '<div id="searchhelpbox" class="ui info message">' + 
+'<div class="header">Location Help</div><ul class="list"><li>Location: <strong>' + 
+place.location + '</strong></li><li>Latitude: <strong>' + place.lat + 
+'</strong></li><li>Longitude: <strong>' + place.long + '</strong></li></ul></div>';
+
+
+
+  }
 
   function loadPlaces() {
       // Populates the list of places visited and puts markers

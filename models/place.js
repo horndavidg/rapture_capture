@@ -4,8 +4,14 @@ var User = require("./user");
 // var DateOnly = require('mongoose-dateonly')(mongoose);
 
 var placeSchema = new mongoose.Schema({
-                    name: String,
-                    location: String,
+                    name: {
+                          type: String, 
+                          required: true
+                        },
+                    location: {
+                          type: String, 
+                          required: true
+                        },
                     lat: String,
                     long: String,
                     startdate: String,
