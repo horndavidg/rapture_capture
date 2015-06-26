@@ -1,5 +1,7 @@
 $(function() {
 
+ // require('dotenv').load();
+
 $('#localattractions').click(function(e) {
     e.preventDefault();
 

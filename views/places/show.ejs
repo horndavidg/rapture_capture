@@ -3,11 +3,15 @@
 
 <h1 class="lp_h1">This is what you did during your <%= place.name%> trip!</h1>
 
-<h3 id="indent">Location: <%= place.location%></h3>
+<h3 id="indent">Location:  <%= place.location%></h3>
 
-<h3 id="indent">Start Date: <%= place.startdate%></h3>
+  <% var start = place.startdate.slice(5,7) + "/" + place.startdate.slice(8,10) + "/" + place.startdate.slice(0,4);
+    var end = place.enddate.slice(5,7) + "/" + place.enddate.slice(8,10) + "/" + place.enddate.slice(0,4);
+    %>
 
-<h3 id="indent">End Date: <%= place.enddate%></h3>
+<h3 id="indent">Start Date:  <%= start%></h3>
+
+<h3 id="indent">End Date:  <%= end%></h3>
 
 <div class="ui two column centered grid">
     <div class="four column centered row">
@@ -30,6 +34,8 @@
 			<img src="<%= place.image[2]%>" alt="<%= place.image[2]%>" height=280>
 
        </div>
+
+       <h1 class="ui dividing header" id="indent">Journal Entries</h1>
           
           <% place.entries.forEach(function(entry){ %>
 

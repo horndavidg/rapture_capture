@@ -3,20 +3,13 @@
 
 
 
-<h1 class="lp_h1">You made it to the EDIT PLACES PAGE!</h1>
+<h1 class="lp_h1">Edit your <%= place.name%> Trip:</h1>
 <br>
 <h2 class="ui dividing header" id="indent">Let's make some changes!</h2>
   <form action="/places/<%= place._id%>?_method=put" method="POST" id="newForm">  
 
 
   <div class="ui form">
-    <div class="ui info message">
-      <div class="header">We had some issues</div>
-      <ul class="list">
-        <li>Please enter your first name</li>
-        <li>Please enter your last name</li>
-      </ul>
-    </div>
     <div class="fields">
       <div class="six wide field">
         <label>Vacation Name:</label>

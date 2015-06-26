@@ -1,8 +1,9 @@
 <% include ../partials/headerUser %>
 
-<h1 class="lp_h1">You made it to the INDEX ENTRIES PAGE!</h1>
 <br>
-<h3 class="ui dividing header" id="indent">Journal Entries for <%= place.name%></h3>
+
+<h1 class="ui dividing header" id="indent">Journal Entries for <%= place.name%></h1>
+
 
 <table class="ui inverted red table">
   <thead>
@@ -50,6 +51,9 @@
 
 
  <a id="indent" href="/places/<%= place._id%>/entries/new">Add a new Journal Entry!</a>
+      <br>
+      <br>
+ <a id="indent" href="/places/<%= place._id%>">Back to <%= place.name%>'s Page</a>
 
 
 
