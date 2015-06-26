@@ -118,7 +118,7 @@ app.get('/show', routeMiddleware.ensureLoggedIn, function(req,res){
    });
 
 
-// POST TO SHOW PAGE ROUTE //
+////////////// POST TO SHOW PAGE ROUTE //////////////
 
 app.post('/show', function(req,res){
 
@@ -127,13 +127,9 @@ app.post('/show', function(req,res){
 
 if (req.body.location !== "") {
 
-// This is where I will initially enter in the other APIs...
 
 request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + 
       req.body.location, function (error, response, body) {
-
-          
-
 
 
           if (error) {
@@ -158,10 +154,8 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" +
         
           var local = {location:loc, lat:lat, long:lng};
 
-       // This is where I will initially enter in the other APIs...
-
 request.get("http://api.openweathermap.org/data/2.5/weather?q=" + 
-      req.body.location, function (error, response, body) {
+      req.body.location + "&units=imperial", function (error, response, body) {
 
           if (error) {
     
@@ -170,22 +164,14 @@ request.get("http://api.openweathermap.org/data/2.5/weather?q=" +
   
           } else if (!error && response.statusCode === 200) {
 
-                    var temperature = JSON.parse(body); 
-                    var weather = temperature.main; 
+                    var weather = JSON.parse(body); 
+                    // Brings in basic weather information for the 
+                    // user given search area...
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+// TODO: This is where I will enter in the Expedia API...
+// Look for an API to produce pictures of the given location
+// >> Work on ERROR HANDLING for bad search results...
 
 
 
@@ -243,7 +229,6 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.bo
 
           // var place = new db.Place(local);
           // place.ownerId = req.session.id;
-          
           // place.save(function(err,place){
    
           res.format({
@@ -339,8 +324,11 @@ app.get('/places/new', routeMiddleware.ensureLoggedIn, function(req,res){
 
 
 
-// CREATE (RESTRICTED TO LOGGED IN USER) //
+//////// CREATE (RESTRICTED TO LOGGED IN USER) ////////
 
+// Functionality to search for and find lat and long
+// for a given location whether the user enters it or
+// searchs for it (allows for map placement)
 
 app.post('/places', routeMiddleware.ensureLoggedIn, function(req,res){
   
