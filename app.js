@@ -167,6 +167,48 @@ request.get("http://api.openweathermap.org/data/2.5/weather?q=" +
                     var weather = JSON.parse(body); 
                     // Brings in basic weather information for the 
                     // user given search area...
+                        if (weather.cod === '404') {
+                            // Error handling for if the weather API is unable to locate the location entered by 
+                            // the user.
+
+                                weather = {main: {temp:"0", humidity:"0"}, weather: [{description:"Not Available"}, 
+                                            {description:"Not Available"}]};
+
+                                 res.format({
+           
+                                'text/html': function(){
+                                      // res.redirect("/show");
+                                      res.render('show', {place:local, currentuser:currentuser, weather:weather});
+                                    },
+     
+                                  'application/json': function(){
+                                        res.send({place:local});
+                                    },
+                                  'default': function() {
+                                  
+                                    res.status(406).send('Not Acceptable');
+
+                                        }
+                                     });
+
+
+                        
+
+
+
+
+
+
+
+
+
+                        } else {
+
+
+
+
+
+
 
 
 // TODO: This is where I will enter in the Expedia API...
@@ -200,6 +242,7 @@ request.get("http://api.openweathermap.org/data/2.5/weather?q=" +
 
                     }
                  });
+                 }
                 }
                }); 
              }
