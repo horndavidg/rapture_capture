@@ -153,29 +153,56 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" +
 
                     } else {
                       
-        // This is where I will initially enter in the other APIs...
-
-
-
-        
-         
           lat = info.results[0].geometry.location.lat;
           lng = info.results[0].geometry.location.lng;
         
           var local = {location:loc, lat:lat, long:lng};
 
-          // Possibly add for submitting search results to db
+       // This is where I will initially enter in the other APIs...
 
-          // var place = new db.Place(local);
-          // place.ownerId = req.session.id;
-          
-          // place.save(function(err,place){
+request.get("http://api.openweathermap.org/data/2.5/weather?q=" + 
+      req.body.location, function (error, response, body) {
+
+          if (error) {
+    
+          console.log("Error!  Request failed - " + error);
+              res.render("errors/500");
+  
+          } else if (!error && response.statusCode === 200) {
+
+                    var temperature = JSON.parse(body); 
+                    var weather = temperature.main; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    
           res.format({
            
             'text/html': function(){
                   // res.redirect("/show");
-                  res.render('show', {place:local, currentuser:currentuser});
+                  res.render('show', {place:local, currentuser:currentuser, weather:weather});
                 },
      
               'application/json': function(){
@@ -187,9 +214,11 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" +
 
                     }
                  });
-             }      
-      }
-});
+                }
+               }); 
+             }
+          }
+        });
 
 } else if (req.body.location === "") {
 
