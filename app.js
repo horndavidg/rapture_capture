@@ -127,9 +127,14 @@ app.post('/show', function(req,res){
 
 if (req.body.location !== "") {
 
+// This is where I will initially enter in the other APIs...
 
 request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + 
       req.body.location, function (error, response, body) {
+
+          
+
+
 
           if (error) {
     
@@ -138,9 +143,21 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" +
   
           } else if (!error && response.statusCode === 200) {
 
-         // console.log(body);
+                    var info = JSON.parse(body);  
 
-          var info = JSON.parse(body);
+                      if (info.status === 'ZERO_RESULTS') {
+                          // The location entered by the user 
+                          // could not be found by Google
+
+                        res.render('errors/404');
+
+                    } else {
+                      
+        // This is where I will initially enter in the other APIs...
+
+
+
+        
          
           lat = info.results[0].geometry.location.lat;
           lng = info.results[0].geometry.location.lng;
@@ -170,7 +187,7 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" +
 
                     }
                  });
-               // });       
+             }      
       }
 });
 
@@ -187,8 +204,6 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.bo
           } else if (!error && response.statusCode === 200) {
 
           var info = JSON.parse(body);
-
-          console.log("THIS IS INFO", info);
 
 
           lat = info.results[0].geometry.location.lat;
@@ -282,9 +297,6 @@ db.Place.find({'ownerId':req.session.id}).populate('entries').populate('author')
 });
 
 
-  // res.render("places/index", {currentuser:"", places:places});
-
-
 
 
 
@@ -314,7 +326,7 @@ if (error) {
 } else if (!error && response.statusCode === 200) {
           
            var info = JSON.parse(body);
-          console.log(">>>>>>>>>>",info);
+          
            if (info.status === 'ZERO_RESULTS') {
                     var lost = new db.Place(req.body.place);
 
