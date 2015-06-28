@@ -5,54 +5,54 @@
 
 <h1 class="lp_h1">Edit your <%= place.name%> Trip:</h1>
 <br>
-<h2 class="ui dividing header" id="indent">Let's make some changes!</h2>
+<h2 class="ui dividing header" id="indent"><span class="white">Let's make some changes!</span></h2>
   <form action="/places/<%= place._id%>?_method=put" method="POST" id="newForm">  
 
 
   <div class="ui form">
     <div class="fields">
       <div class="six wide field">
-        <label>Vacation Name:</label>
+        <label><span class="white">Vacation Name:</span></label>
         <input type="text" name="place[name]" value="<%= place.name%>" autofocus>
       </div>
      <div class="eight wide field">
-        <label>Location:</label>
+        <label><span class="white">Location:</span></label>
         <input value="<%= place.location%>" type="text" name="place[location]">
       </div>
        </div>
        
        <div class="fields">
        <div class="four wide field">
-        <label>Start Date:</label>
+        <label><span class="white">Start Date:</span></label>
         <input value="<%= place.startdate%>" type="date" name="place[startdate]">
       </div>
       <div class="four wide field">
-        <label>End Date:</label>
+        <label><span class="white">End Date:</span></label>
         <input type="date" name="place[enddate]" value="<%= place.enddate%>">
       </div>
       </div>
 
        <div class="fields">
 		<div class="four wide field">
-        <label>Image 1:</label>
+        <label><span class="white">Image 1:</span></label>
         <input value="<%= place.image[0]%>" type="text" name="place[[image]]">
       </div>
       <div class="four wide field">
-        <label>Image 2:</label>
+        <label><span class="white">Image 2:</span></label>
         <input value="<%= place.image[1]%>" type="text" name="place[[image]]">
       </div>
        <div class="four wide field">
-        <label>Image 3:</label>
+        <label><span class="white">Image 3:</span></label>
         <input value="<%= place.image[2]%>" type="text" name="place[[image]]">
       </div>
 	</div>
     <div class="fields">
     <div class="four wide field">
-        <label>Latitude:</label>
+        <label><span class="white">Latitude:</span></label>
         <input value="<%= place.lat%>" type="text" name="place[lat]">
       </div>
       <div class="four wide field">
-        <label>Longitude:</label>
+        <label><span class="white">Longitude:</span></label>
         <input value="<%= place.long%>" type="text" name="place[long]">
       </div>
     </div>
@@ -66,7 +66,7 @@
       <input type="submit" value="Remove!" class="ui red button">
     </form>
   <br>
-  <a href="/places" id="indent">Go Back</a>
+  <a href="/places" id="indent" class="white">Go Back</a>
 
 
 

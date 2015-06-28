@@ -3,47 +3,48 @@
 
 <h1 class="lp_h1">This is what you did during your <%= place.name%> trip!</h1>
 
-<h3 id="indent">Location:  <%= place.location%></h3>
+<h3 id="indent" class="white">Location:  <%= place.location%></h3>
 
   <% var start = place.startdate.slice(5,7) + "/" + place.startdate.slice(8,10) + "/" + place.startdate.slice(0,4);
     var end = place.enddate.slice(5,7) + "/" + place.enddate.slice(8,10) + "/" + place.enddate.slice(0,4);
     %>
 
-<h3 id="indent">Start Date:  <%= start%></h3>
+<h3 id="indent" class="white">Start Date:  <%= start%></h3>
 
-<h3 id="indent">End Date:  <%= end%></h3>
+<h3 id="indent" class="white">End Date:  <%= end%></h3>
 
 <div class="ui two column centered grid">
     <div class="four column centered row">
       <div class="column">
       	
-			<h3><a href="<%= place.image[0]%>" target="_blank">Image 1</a></h3>
-			<img src="<%= place.image[0]%>" alt="<%= place.image[0]%>" height=280>
+			<h3><a href="<%= place.image[0]%>" target="_blank" class="white">Image 1</a></h3>
+			<img src="<%= place.image[0]%>" alt="No Image Uploaded" height=280>
 
       </div>
       <div class="column">
       	
-      	<h3 id="indent"><a href="<%= place.image[1]%>" target="_blank">Image 2</a></h3>
-		<img src="<%= place.image[1]%>" alt="<%= place.image[1]%>" height=280>
+      	<h3 id="indent"><a href="<%= place.image[1]%>" target="_blank" class="white">Image 2</a></h3>
+		<img src="<%= place.image[1]%>" alt="No Image Uploaded" height=280>
 
       </div>
       </div>
        <div class="column">
 	        
-	        <h3 id="indent"><a href="<%= place.image[2]%>" target="_blank">Image 3</a></h3>
-			<img src="<%= place.image[2]%>" alt="<%= place.image[2]%>" height=280>
+	        <h3 id="indent"><a href="<%= place.image[2]%>" target="_blank" class="white">Image 3</a></h3>
+			<img src="<%= place.image[2]%>" alt="No Image Uploaded" height=280>
 
        </div>
 
-       <h1 class="ui dividing header" id="indent">Journal Entries</h1>
+       <h1 class="ui dividing header" id="indent"><span class="white">Journal Entries</span></h1>
           
           <% place.entries.forEach(function(entry){ %>
 
           <div class="two column centered row">
           <div class="column">
-      	
-			<h3 id="indent"><%= entry.name%></h3>
-			<p><%= entry.body%></p>
+      	   <div class="ui warning message">
+			       <h3 id="indent" class="black"><%= entry.name%></h3>
+			       <p class="black"><%= entry.body%></p>
+             </div>
           </div>
           </div>
 
@@ -51,21 +52,16 @@
 
     </div>
 <br>
-<a href="/places/<%= place._id%>/entries/new" id="indent">Add a Journal Entry</a>
+<br>
+<a href="/places/<%= place._id%>/entries/new" class="white" id="indent">Add a Journal Entry</a>
 <br>
 <br>
-<a href="/places/<%= place._id%>/entries" id="indent">See all Journal Entries</a>
+<a href="/places/<%= place._id%>/entries" class="white" id="indent">See all Journal Entries</a>
 <br>
 <br>
-<a href="/places" id="indent">Go Home</a>
+<a href="/places" class="white" id="indent">Go Home</a>
  <br>
-
-
-
-
-
-
-
+ <br>
 
 
 <% include ../partials/footer %>

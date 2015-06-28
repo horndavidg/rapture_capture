@@ -63,7 +63,7 @@ userSchema.statics.authenticate = function (formData, callback) {
     // helper function
     function (err, user) {
       if (user === null){
-        callback("Invalid username or password!",null);
+        callback("Invalid EMAIL or PASSWORD!",null);
         // dosen't give away too much information
       }
       else {
@@ -83,7 +83,7 @@ userSchema.methods.checkPassword = function(password, callback) {
     if (isMatch) {
       callback(null, user);
     } else {
-      callback("Invalid username or password!", null);
+      callback("Invalid EMAIL or PASSWORD!", null);
     }
   });
 };

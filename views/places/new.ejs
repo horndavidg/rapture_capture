@@ -1,13 +1,9 @@
 <% include ../partials/headerUser %>
 
-
-
-
-<h1 class="lp_h1">You made it to the NEW PLACES PAGE!</h1>
 <br>
-<h2 class="ui dividing header" id="indent">Where have you been!</h2>
+<h2 class="ui dividing header" id="indent"><span class="white">Where have you been!</span></h2>
+  
   <form action="/places" method="POST" id="newForm">  
-
 
   <div class="ui form">
     <div class="ui info message">
@@ -19,13 +15,13 @@
     <div class="fields">
       <div class="six wide field">
        <div class="required field">
-        <label>I went to:</label>
+        <label><span class="white">I went to:</span></label>
         <input placeholder="Name or Nickname" type="text" name="place[name]">
         </div>
       </div>
      <div class="eight wide field">
       <div class="required field">
-        <label>Location:</label>
+        <label><span class="white">Location:</span></label>
         <input placeholder="Closest Address" type="text" name="place[location]">
         </div>
         </div>
@@ -37,30 +33,30 @@
        
        <div class="fields">
        <div class="four wide field">
-        <label>Start Date:</label>
+        <label><span class="white">Start Date:</span></label>
         <input type="date" name="place[startdate]">
       </div>
       <div class="four wide field">
-        <label>End Date:</label>
+        <label><span class="white">End Date:</span></label>
         <input type="date" name="place[enddate]">
       </div>
       </div>
 
        <div class="fields">
 		<div class="four wide field">
-        <label>Image 1:</label>
+        <label><span class="white">Image 1:</span></label>
         <input placeholder="URL Please" type="text" name="place[[image]]">
       </div>
       <div class="four wide field">
-        <label>Image 2:</label>
+        <label><span class="white">Image 2:</span></label>
         <input placeholder="URL Please" type="text" name="place[[image]]">
       </div>
        <div class="four wide field">
-        <label>Image 3:</label>
+        <label><span class="white">Image 3:</span></label>
         <input placeholder="URL Please" type="text" name="place[[image]]">
       </div>
 	</div>
-    
+  <br>
    <div>
        <input type="submit" value="Add It" class="ui primary button">
   </div>
@@ -68,7 +64,7 @@
   </form>
 
   <br>
-  <a href="/places" id="indent">Go Back</a>
+  <a href="/places" class="white" id="indent">Go Back</a>
 
 
 

@@ -53,12 +53,12 @@
     <% } %>
   </div>
 
-<h1 class="lp_h1">This is <%= place.location%>!</h1>
+<h1 class="lp_h1"><%= place.location%></h1>
 
 
-<h3 id="indent">Latitude: <%= place.lat%></h3>
+<h3 id="indent" class="white">Latitude: <%= place.lat%></h3>
 
-<h3 id="indent">Longitude: <%= place.long%></h3>
+<h3 id="indent" class="white">Longitude: <%= place.long%></h3>
 
 <div class="ui two column centered grid">
     <div class="four column centered row">
@@ -103,32 +103,6 @@
 <br>
 <div id="placehere"></div>
 <br>
-<div class="ui two column centered grid"> 
-
-    <div class="four column centered row">
-      <div class="column">
-        
-      <h3><a href="" target="_blank">Image 1</a></h3>
-      <img src="http://wallpapers55.com/wp-content/uploads/2013/11/beach-tropical-hd-wallpaper.jpg" alt="Image 1" height=280>
-
-      </div>
-      <div class="column">
-        
-        <h3><a href="" target="_blank">Image 2</a></h3>
-    <img src="http://www.tropicalbeachgetaways.com/wp-content/uploads/2011/02/tropical-beach-serene-peaceful-774060.jpg" alt="Image 2" height=280>
-
-      </div>
-      </div>
-        <div class="four column centered row">
-       <div class="column">
-          
-          <h3><a href="" target="_blank">Image 3</a></h3>
-      <img src="http://www.emoticonswallpapers.com/wallpaper/beaches/tropical-beach-wallpaper-086.jpg" alt="Image 3" height=280>
-
-       </div>
-       </div>
-    </div>
-<br>
 
 <form action="/places" method="POST" id="newForm">  
     <input type="hidden" name="place[name]" value="<%= place.location%>">
@@ -144,9 +118,10 @@
 </form>
 
 <br>
-<a href="/places" id="indent">Go Home</a>
+<a href="/places" id="indent" class="white">Go Home</a>
  <br>
-
+<br>
+<br>
 
 
 

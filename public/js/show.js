@@ -16,7 +16,7 @@ $.ajax({
   var info = JSON.stringify(data);
   var info2 = JSON.parse(info);
 
-var title = '<h3 class="ui dividing header" id="indent">Local Attractions:</h3>';  
+var title = '<h3 class="ui dividing header" id="indent"><span class="white">Local Attractions:</span></h3>';  
 
 
 $('#placehere').append(title);
@@ -46,11 +46,6 @@ info2.activities.forEach(function(activity){
 //     alert(JSON.stringify(data));
 //   }
 // });
-
-
-
-
-
 
 
 

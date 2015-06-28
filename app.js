@@ -234,23 +234,56 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.bo
   
           } else if (!error && response.statusCode === 200) {
 
-          var info = JSON.parse(body);
+                var info = JSON.parse(body);
+                   
+                   console.log(info);
+    
+    // TODO: Figure out error handling when the user clicks on a location 
+    // on the map that can't be found          
 
+              if (info.status === 'ZERO_RESULTS') {
 
-          lat = info.results[0].geometry.location.lat;
-          lng = info.results[0].geometry.location.lng;
-          loc = info.results[0].formatted_address;
+              var notfound = {location:"Not Found", lat:"Not Found", long:"Not Found"};
 
-          var local = {location:loc, lat:lat, long:lng};
-
-          // var place = new db.Place(local);
-          // place.ownerId = req.session.id;
-          // place.save(function(err,place){
+        
    
-          res.format({
-            
-            'text/html': function(){
-                 res.render('show', {place:local, currentuser:currentuser});
+                        res.format({
+                          
+                          'text/html': function(){
+                               res.render('show', {place:notfound, currentuser:currentuser});
+                              },
+     
+                            'application/json': function(){
+                                  res.send({place:notfound});
+                              },
+                            'default': function() {
+                            
+                              res.status(406).send('Not Acceptable');
+
+                                  }
+                               });
+
+                
+
+
+
+                      } else {
+
+
+             lat = info.results[0].geometry.location.lat;
+             lng = info.results[0].geometry.location.lng;
+             loc = info.results[0].formatted_address;
+
+             var local = {location:loc, lat:lat, long:lng};
+
+             // var place = new db.Place(local);
+             // place.ownerId = req.session.id;
+             // place.save(function(err,place){
+   
+             res.format({
+               
+               'text/html': function(){
+                    res.render('show', {place:local, currentuser:currentuser});
                 },
      
               'application/json': function(){
@@ -261,16 +294,12 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.bo
                 res.status(406).send('Not Acceptable');
 
                     }
-                 });
-                }
-              });
-            // });
+                 }); 
+              }
+              }
+            });
           }
-});
-
-
-
-
+        });
 
 
 

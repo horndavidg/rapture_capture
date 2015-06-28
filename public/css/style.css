@@ -3,6 +3,7 @@ text-align: center;
 margin-top: 4%;
 font-family: ‘Palatino Linotype’, ‘Book Antiqua’, Palatino, serif;
 font-size: 60px;
+color: white;
 }
 
 .lp_p {
@@ -25,6 +26,14 @@ font-size: 20px;
 	margin-left: 2%;
 }
 
+.white {
+	color: white;
+}
+
+.black {
+	color: black;
+}
+
 #newForm {
 	margin-left: 1%;
 }
@@ -37,11 +46,11 @@ font-size: 20px;
      text-align: center;
 }
 
-/*body {
+body {
 
-  background: url(http://www.beyondwealthsports.com/wp-content/uploads/2012/10/leatherBackground.png) no-repeat center center fixed; 
+  background: url(http://wallpoper.com/images/00/36/08/65/world-maps_00360865.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   background-size: cover;
-}*/
-
+}
+/*http://www.beyondwealthsports.com/wp-content/uploads/2012/10/leatherBackground.png*/
 /*http://www.ihomesys.com/images/leather-bkgr-lrg.jpg*/

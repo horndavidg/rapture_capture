@@ -1,12 +1,8 @@
 <% include ../partials/headerUser %>
 
-
-
-
-<h1 class="lp_h1">You made it to the EDIT ENTRIES PAGE!</h1>
 <br>
 
-<h2 class="ui dividing header" id="indent">Edit this Journal Entry for <%= entry.place.name%>!</h2>
+<h2 class="ui dividing header" id="indent"><span class="white">Edit this Journal Entry for <%= entry.place.name%></span></h2>
   
   <form action="/entries/<%= entry._id%>%>?_method=put" method="POST" id="newForm">  
 
@@ -19,12 +15,12 @@
     <div class="fields">
       <div class="six wide field">
       <div class="required field">
-        <label>Title:</label>
+        <label><span class="white">Title:</span></label>
         <input type="text" name="entry[name]" value=<%= entry.name%> autofocus>
       </div>
       </div>
       <div class="four wide field">
-        <label>Date this Entry:</label>
+        <label><span class="white">Date this Entry:</span></label>
         <input type="date" name="entry[date]" value=<%= entry.date%>>
       </div>
        </div>
@@ -37,37 +33,37 @@
        <div class="fields">
        <div class="eight wide field">
        <div class="required field">
-          <label>Entry: </label>
+          <label><span class="white">Entry: </span></label>
     <textarea name="entry[body]" rows="4" cols="30" ><%= entry.body%></textarea>
       </div>
       </div>
       </div>
-
+      <br>
        <div class="fields">
 		<div class="four wide field">
-        <label>Image 1:</label>
+        <label><span class="white">Image 1:</span></label>
         <input value=<%= entry.image[0]%> type="text" name="entry[[image]]">
       </div>
       <div class="four wide field">
-        <label>Image 2:</label>
-        <input value=<%= entry.image[0]%> type="text" name="entry[[image]]">
+        <label><span class="white">Image 2:</span></label>
+        <input value=<%= entry.image[1]%> type="text" name="entry[[image]]">
       </div>
        <div class="four wide field">
-        <label>Image 3:</label>
-        <input value=<%= entry.image[0]%> type="text" name="entry[[image]]">
+        <label><span class="white">Image 3:</span></label>
+        <input value=<%= entry.image[2]%> type="text" name="entry[[image]]">
       </div>
 	</div>
-    
+    <br>
    <div>
        <input type="submit" value="Update" class="ui primary button">
   </div>
   </div>
   </form>
   <br>
-  <a href="/places/<%= entry.place._id%>" id="indent">Go to Vacation Page</a>
+  <a href="/places/<%= entry.place._id%>" class="white" id="indent">Go to Vacation Page</a>
   <br>
   <br>
-  <a href="/places/<%= entry.place._id%>/entries" id="indent">See all Journal Entries</a>
+  <a href="/places/<%= entry.place._id%>/entries" class="white" id="indent">See all Journal Entries</a>
 
 
 
