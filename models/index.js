@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/rapture_capture_app");
+mongoose.connect(process.env.MONGOLAB_URI || "mongodb://localhost/rapture_capture_app");
 
 mongoose.set("debug", true);
 
