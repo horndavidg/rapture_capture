@@ -13,7 +13,7 @@ var location = $('#location').val();
 var key = $('#key').val();
 
 $.ajax({
-  url: 'https://terminal2.expedia.com/x/activities/search?location=' + location + '&apikey=' + key,
+  url: 'http://terminal2.expedia.com/x/activities/search?location=' + location + '&apikey=' + key,
   method: "GET",
   success: function(data) {
   var info = JSON.stringify(data);
