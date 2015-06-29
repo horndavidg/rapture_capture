@@ -62,8 +62,9 @@ app.post("/signup", function (req,res) {
       res.redirect("/places");
     } else if (err){
       
+      var error = "Please GO BACK and make sure all the required fields are filled";
        // ERROR HANDLING - SEE VIEWS AND MODELS FILES
-      res.render("users/signup", {err:err});
+      res.render("users/signup", {err:error});
 
    }
   });
@@ -506,8 +507,6 @@ app.delete('/places/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensure
 });
 
 
-
-
 //******************* ENTRY ROUTES ***********************//
 
 
@@ -535,7 +534,7 @@ app.get('/places/:place_id/entries/new', routeMiddleware.ensureLoggedIn, functio
 app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(req,res){
   db.Entry.create(req.body.entry, function(error, entries){
     if(error) {
-      error = "Please make sure all the required fields are filled";
+      error = "Please GO BACK and make sure all the required fields are filled";
     db.Place.findById(req.params.place_id,
     function (err, place) {
       res.render("entries/new", {place:place, err:error, currentuser:currentuser});
