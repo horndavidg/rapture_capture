@@ -126,7 +126,7 @@ app.post('/show', function(req,res){
 
  var loc = req.body.location;
  var key = process.env.EX_KEY;
-
+console.log(">>>>>>>>>", req.body);
 
 if (req.body.location !== "") {
 
@@ -244,11 +244,17 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.bo
                 // on the map that can't be found  
 
               var notfound = {location:"Not Found", lat:"Not Found", long:"Not Found"};
+              
+              weather = {main: {temp:"0", humidity:"0"}, weather: [{description:"Not Available"}, 
+                                            {description:"Not Available"}]};
+
+                      // Adding not found weather information in case the user submits the search 
+                      // form with entering anything....
 
                         res.format({
                           
                           'text/html': function(){
-                               res.render('show', {place:notfound, currentuser:currentuser, key:key});
+                               res.render('show', {place:notfound, weather:weather, currentuser:currentuser, key:key});
                               },
      
                             'application/json': function(){
