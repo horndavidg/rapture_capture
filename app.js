@@ -8,7 +8,7 @@ favicon = require('serve-favicon'),
 loginMiddleware = require("./middleware/loginHelper");
 routeMiddleware = require("./middleware/routeHelper");
 require('dotenv').load();
-
+var passport = require('passport'), FacebookStrategy = require('passport-facebook').Strategy;
 
 var request = require('request');
 
@@ -24,6 +24,19 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(loginMiddleware);
+
+
+passport.use(new FacebookStrategy({
+    clientID: process.env.FB_ID,
+    clientSecret: process.env.FB_SC,
+    callbackURL: "https://rapturecapture.herokuapp.com/auth/facebook/callback"},
+  function(accessToken, refreshToken, profile, done) {
+    db.User.findOrCreate(profile, function(err, user) {
+      if (err) { return done(err); }
+      done(null, user);
+    });
+  }
+));
 
 
 app.use(session({
@@ -93,6 +106,23 @@ app.post("/login", function (req, res) {
     }
   });
 });
+
+
+// ROUTES FOR AUTH WITH FACEBOOK // *******************
+
+app.get('/auth/facebook', passport.authenticate('facebook'));
+// Takes the user to FB to login-in
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { successRedirect: '/places',
+                                      failureRedirect: '/login' }));
+// If log in is successful takes the user to places index or if they
+// fail redirects them to the login page
+
+
+
+
+
 
 
 // LOGS OUT USER! //
