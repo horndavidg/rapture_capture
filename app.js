@@ -159,7 +159,7 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" +
         
           var local = {location:loc, lat:lat, long:lng};
 
-request.get("https://api.openweathermap.org/data/2.5/weather?q=" + 
+request.get("http://api.openweathermap.org/data/2.5/weather?q=" + 
       req.body.location + "&units=imperial", function (error, response, body) {
 
           if (error) {
