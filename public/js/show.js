@@ -1,7 +1,5 @@
 $(function() {
 
-$('#localattractions').hide();
-
 $('#localattractions').click(function(e) {
     e.preventDefault();
     // Prevents the form from submitting and allows access
