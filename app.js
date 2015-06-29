@@ -9,6 +9,7 @@ loginMiddleware = require("./middleware/loginHelper");
 routeMiddleware = require("./middleware/routeHelper");
 require('dotenv').load();
 
+
 var request = require('request');
 
 var db = require("./models");
@@ -23,6 +24,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(loginMiddleware);
+
 
 app.use(session({
   maxAge: 3600000,
@@ -126,7 +128,7 @@ app.post('/show', function(req,res){
 
  var loc = req.body.location;
  var key = process.env.EX_KEY;
-console.log(">>>>>>>>>", req.body);
+
 
 if (req.body.location !== "") {
 
@@ -197,8 +199,6 @@ request.get("http://api.openweathermap.org/data/2.5/weather?q=" +
 
 
                         } else {
-
-// TODO: >> Work on ERROR HANDLING for bad search results...
 
 
           res.format({
