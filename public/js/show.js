@@ -1,16 +1,19 @@
 $(function() {
 
- // require('dotenv').load();
 
 $('#localattractions').click(function(e) {
     e.preventDefault();
+    // Prevents the form from submitting and allows access
+    // to hidden values.
 
       $('#localattractions').hide();
 
 var location = $('#location').val();
 
+var key = $('#key').val();
+
 $.ajax({
-  url: 'http://terminal2.expedia.com/x/activities/search?location=' + location + '&apikey=1QuJvV20cJTx4gtsq6AyOY4wtJ8YjoL6',
+  url: 'http://terminal2.expedia.com/x/activities/search?location=' + location + '&apikey=' + key,
   method: "GET",
   success: function(data) {
   var info = JSON.stringify(data);
@@ -38,14 +41,9 @@ info2.activities.forEach(function(activity){
 
 
 
-// $.ajax({
-//   url: 'http://terminal2.expedia.com/x/activities/search?location=Boston&apikey=1QuJvV20cJTx4gtsq6AyOY4wtJ8YjoL6',
-//   method: "GET",
-//   success: function(data) {
 
-//     alert(JSON.stringify(data));
-//   }
-// });
+
+
 
 
 

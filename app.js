@@ -7,7 +7,7 @@ morgan = require("morgan"),
 favicon = require('serve-favicon'),
 loginMiddleware = require("./middleware/loginHelper");
 routeMiddleware = require("./middleware/routeHelper");
-process.env = require('dotenv');
+require('dotenv').load();
 
 var request = require('request');
 
@@ -125,6 +125,7 @@ app.get('/show', routeMiddleware.ensureLoggedIn, function(req,res){
 app.post('/show', function(req,res){
 
  var loc = req.body.location;
+ var key = process.env.EX_KEY;
 
 
 if (req.body.location !== "") {
@@ -169,6 +170,7 @@ request.get("http://api.openweathermap.org/data/2.5/weather?q=" +
                     var weather = JSON.parse(body); 
                     // Brings in basic weather information for the 
                     // user given search area...
+                        
                         if (weather.cod === '404') {
                             // Error handling for if the weather API is unable to locate the location entered by 
                             // the user.
@@ -180,7 +182,7 @@ request.get("http://api.openweathermap.org/data/2.5/weather?q=" +
            
                                 'text/html': function(){
                                       // res.redirect("/show");
-                                      res.render('show', {place:local, currentuser:currentuser, weather:weather});
+                                      res.render('show', {place:local, currentuser:currentuser, weather:weather, key:key});
                                     },
      
                                   'application/json': function(){
@@ -203,7 +205,7 @@ request.get("http://api.openweathermap.org/data/2.5/weather?q=" +
            
             'text/html': function(){
                   // res.redirect("/show");
-                  res.render('show', {place:local, currentuser:currentuser, weather:weather});
+                  res.render('show', {place:local, currentuser:currentuser, weather:weather, key:key});
                 },
      
               'application/json': function(){
@@ -234,23 +236,19 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.bo
   
           } else if (!error && response.statusCode === 200) {
 
-                var info = JSON.parse(body);
-                   
-                   console.log(info);
-    
-    // TODO: Figure out error handling when the user clicks on a location 
-    // on the map that can't be found          
+                var info = JSON.parse(body);        
 
               if (info.status === 'ZERO_RESULTS') {
 
+                // Error handling when the user clicks on a location 
+                // on the map that can't be found  
+
               var notfound = {location:"Not Found", lat:"Not Found", long:"Not Found"};
 
-        
-   
                         res.format({
                           
                           'text/html': function(){
-                               res.render('show', {place:notfound, currentuser:currentuser});
+                               res.render('show', {place:notfound, currentuser:currentuser, key:key});
                               },
      
                             'application/json': function(){
@@ -263,43 +261,37 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.bo
                                   }
                                });
 
-                
-
-
-
                       } else {
 
+                          // If the geolocation from the map is found then this code
+                          // will run....
 
-             lat = info.results[0].geometry.location.lat;
-             lng = info.results[0].geometry.location.lng;
-             loc = info.results[0].formatted_address;
-
-             var local = {location:loc, lat:lat, long:lng};
-
-             // var place = new db.Place(local);
-             // place.ownerId = req.session.id;
-             // place.save(function(err,place){
-   
-             res.format({
-               
-               'text/html': function(){
-                    res.render('show', {place:local, currentuser:currentuser});
-                },
-     
-              'application/json': function(){
-                    res.send({place:local});
-                },
-              'default': function() {
-              
-                res.status(406).send('Not Acceptable');
-
-                    }
-                 }); 
-              }
-              }
-            });
-          }
-        });
+                              lat = info.results[0].geometry.location.lat;
+                              lng = info.results[0].geometry.location.lng;
+                              loc = info.results[0].formatted_address;
+                 
+                              var local = {location:loc, lat:lat, long:lng};
+                    
+                              res.format({
+                                
+                                'text/html': function(){
+                                     res.render('show', {place:local, currentuser:currentuser, key:key});
+                                 },
+                      
+                               'application/json': function(){
+                                     res.send({place:local});
+                                 },
+                               'default': function() {
+                               
+                                 res.status(406).send('Not Acceptable');
+                 
+                                     }
+                                  }); 
+                              }
+                            }
+                          });
+                          }
+                        });
 
 
 
