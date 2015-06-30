@@ -23,6 +23,9 @@ var userSchema = new mongoose.Schema({
       type: String,
       required: true
     },
+    facebook: {
+      type: String
+    }
   });
 
 

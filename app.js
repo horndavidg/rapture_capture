@@ -24,19 +24,53 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(loginMiddleware);
+app.use(passport.initialize());
+app.use(passport.session());
 
 
-passport.use(new FacebookStrategy({
-    clientID: process.env.FB_ID,
-    clientSecret: process.env.FB_SC,
-    callbackURL: "https://rapturecapture.herokuapp.com/auth/facebook/callback"},
-  function(accessToken, refreshToken, profile, done) {
-    db.User.findOrCreate(profile, function(err, user) {
-      if (err) { return done(err); }
-      done(null, user);
-    });
-  }
-));
+// passport.use(new FacebookStrategy({
+//     clientID: process.env.FB_ID,
+//     clientSecret: process.env.FB_SC,
+//     callbackURL: "http://localhost:3000/auth/facebook/callback"},
+//   function(accessToken, refreshToken, profile, done) {
+//     console.log("1st>>>>>>>", profile);
+//     db.User.findOne({'facebook':profile.id}, function(err, user) {
+//       if (err) { return done(err); }
+//       console.log("2nd>>>>>>>>>", user);
+
+//       if (!user) {
+        
+//           var newuser = {
+//           username: profile.displayName,
+//           email: profile.profileUrl,
+//           password: profile.id,
+//           facebook: profile.id
+//         };
+
+
+//  db.User.create(newuser, function(err, user){
+//     if(err) {console.log(err);}
+
+                  
+//                     // req.session.id = user._id;
+//                     return done(err, user);
+//            });      
+//       } else {
+       
+//        return done(null, user);
+
+//              }
+//            });
+//          }
+//        ));
+    
+// passport.serializeUser(function(user, done) {
+//   done(null, user);
+// });
+
+// passport.deserializeUser(function(user, done) {
+//   done(null, user);
+// });
 
 
 app.use(session({
@@ -108,14 +142,40 @@ app.post("/login", function (req, res) {
 });
 
 
-// ROUTES FOR AUTH WITH FACEBOOK // *******************
+// // ROUTES FOR AUTH WITH FACEBOOK // *******************
 
-app.get('/auth/facebook', passport.authenticate('facebook'));
-// Takes the user to FB to login-in
+// app.get('/auth/facebook', passport.authenticate('facebook'), function(req,res){
 
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { successRedirect: '/places',
-                                      failureRedirect: '/login' }));
+
+// });
+// // Takes the user to FB to login-in
+// app.get('/auth/facebook/callback', function(req, res, next) {
+
+// console.log("THIS RAN");
+
+//     passport.authenticate('facebook', function(err, user, info) {
+      
+//        if (err) { return next(err); }
+
+//        if (!user) { return res.redirect('/login'); }
+
+//        req.login(user, function(err) {
+      
+//       if (err) { return next(err); }
+      
+//       return res.redirect('/places');
+//     });
+//   });
+// });
+
+
+// *****************************************************
+
+  // passport.authenticate('facebook', { failureRedirect: '/login' }),
+  // function(req, res, user) {
+  //     req.login(user);
+  //     res.redirect("/places");
+  // });
 // If log in is successful takes the user to places index or if they
 // fail redirects them to the login page
 
@@ -338,15 +398,18 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.bo
 // INDEX ROUTE (RESTRICTED TO LOGGED IN USER) //
 
 app.get('/places', routeMiddleware.ensureLoggedIn, function(req,res){
+ 
 db.Place.find({'ownerId':req.session.id}).populate('entries').populate('author')
     .exec(function(err,places){
   if(err) {
     console.log(err);
     res.render("errors/500");
 } else {
+      // console.log(req.session.id);
       if(req.session.id === null){
         res.redirect('/');
       } else {
+        console.log(req.body);
         db.User.findById(req.session.id, function(err,user){
           currentuser = user.username;
           // sets the current user variable to the current user that is loged in
