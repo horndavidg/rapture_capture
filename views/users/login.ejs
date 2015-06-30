@@ -12,32 +12,37 @@
 
 <div class="ui large form segment">
   <div class="two fields">
+    
     <div class="required field">
+      <label>E-mail</label>
+      <input placeholder="E-mail" type="text" name="user[email]">
+    </div>
+    <div class="required field">
+      <label>Password</label>
+      <div class="ui icon input">
+      <input placeholder="Password" type="password" name="user[password]">
+      <i class="lock icon"></i>
+      </div>
+   </div>
+
+
+  </div>
+
+ <!-- Username not checked at login of an existing user -->
+
+  <!--   <div class="field">
+    <div class="required field">
+      <div class="six wide field">
+       <div class="required field">
       <label>Username</label>
       <div class="ui icon input">
       <input placeholder="Username" type="text" name="user[username]">
       <i class="user icon"></i>
       </div>
     </div>
-    <div class="required field">
-      <label>E-mail</label>
-      <input placeholder="E-mail" type="text" name="user[email]">
-    </div>
-  </div>
-
-    <div class="field">
-    <div class="required field">
-      <div class="six wide field">
-       <div class="required field">
-      <label>Password</label>
-      <div class="ui icon input">
-      <input placeholder="Password" type="password" name="user[password]">
-      <i class="lock icon"></i>
-      </div>
-      </div>
-      </div>
-    </div>
-    </div>
+     </div> 
+ </div>
+    </div> -->
   
   <div>
        <input type="submit" value="Login" class="ui primary button">

@@ -28,6 +28,9 @@ app.use(loginMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Facebook Strategy used by Passport when interacting with
+// the Facebook Auth. Uses given keys and allows access to 
+// information through the profile tag.... 
 
 // passport.use(new FacebookStrategy({
 //     clientID: process.env.FB_ID,
@@ -145,8 +148,19 @@ app.post("/login", function (req, res) {
   });
 });
 
+// LOGS OUT USER! //
 
-// // ROUTES FOR AUTH WITH FACEBOOK // *******************
+app.get("/logout", function (req, res) {
+  req.logout();
+  res.redirect("/");
+});
+
+
+var currentuser;
+// used for nav bar
+
+
+// ROUTES FOR AUTH WITH FACEBOOK // ********************
 
 // The initial route that a user is taken to via a link on the 
 // index log in page....
@@ -186,20 +200,6 @@ app.post("/login", function (req, res) {
 
 
 
-
-
-
-
-// LOGS OUT USER! //
-
-app.get("/logout", function (req, res) {
-  req.logout();
-  res.redirect("/");
-});
-
-
-var currentuser;
-// used for nav bar
 
 //******************* SHOW SEARCH ROUTES *************************//
 
@@ -457,6 +457,10 @@ app.get('/places/new', routeMiddleware.ensureLoggedIn, function(req,res){
 
 app.post('/places', routeMiddleware.ensureLoggedIn, function(req,res){
   
+  // Brings key in for error handling purposes
+  var UC_KEY = process.env.UC_KEY;
+
+  // First API request to google for geolocation.... 
   request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + 
        req.body.place.location, function (error, response, body) {
 
@@ -478,7 +482,7 @@ if (error) {
                   if(err) {
                       error = "Please GO BACK and make sure all the required fields are filled";
                       console.log(err);
-                      res.render("places/new", {err:error, currentuser:currentuser});
+                      res.render("places/new", {err:error, currentuser:currentuser, UC_KEY:UC_KEY});
                     } else {
                         res.redirect("/places"); 
                    }
@@ -510,6 +514,9 @@ if (error) {
       });
 
 // WORKING SIMPLE VERSION //
+
+// This is the version without incorporated API's
+
 // app.post('/places', routeMiddleware.ensureLoggedIn, function(req,res){
 //   var place = new db.Place(req.body.place);
 //     place.ownerId = req.session.id;
@@ -614,12 +621,16 @@ app.get('/places/:place_id/entries/new', routeMiddleware.ensureLoggedIn, functio
 // CREATE ENTRY (RESTRICTED TO LOGGED IN USER) //
 
 app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(req,res){
+  
+     // Brings key in for error handling purposes
+     var UC_KEY = process.env.UC_KEY;
+
   db.Entry.create(req.body.entry, function(error, entries){
     if(error) {
       error = "Please GO BACK and make sure all the required fields are filled";
     db.Place.findById(req.params.place_id,
     function (err, place) {
-      res.render("entries/new", {place:place, err:error, currentuser:currentuser});
+      res.render("entries/new", {place:place, err:error, currentuser:currentuser, UC_KEY:UC_KEY});
     });
 
     }
@@ -629,7 +640,7 @@ app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(r
       db.Place.findById(req.params.place_id,function(err,place){
         if(err) {
           
-          res.render("entries/new", {place:place, err:err, currentuser:currentuser});
+          res.render("entries/new", {place:place, err:err, currentuser:currentuser, UC_KEY:UC_KEY});
               
         } else {
 
@@ -657,7 +668,6 @@ app.get('/entries/:id/edit', routeMiddleware.ensureLoggedIn, routeMiddleware.ens
       res.render("entries/edit", {entry:entry, err:err, currentuser:currentuser, UC_KEY:UC_KEY});
     });
 });
-
 
 
 // UPDATE ENTRY (RESTRICTED TO SPECIFIC LOGGED IN USER) //
@@ -708,10 +718,6 @@ app.delete('/entries/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensur
 });
 
 
-
-
-
-
 // ********************************************************
 
 
@@ -722,5 +728,5 @@ app.get('*', function(req,res){
 
 // START SERVER //
 app.listen(process.env.PORT || 3000, function(){
-  console.log("Server is listening on Port: 3000");
+  // console.log("Server is listening on Port: 3000");
 });
