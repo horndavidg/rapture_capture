@@ -1,4 +1,4 @@
-<% include ../partials/headerUser %>
+<% include ../partials/headerUserUC %>
 
 <br>
 <h2 class="ui dividing header" id="indent"><span class="white">Where have you been!</span></h2>
@@ -45,15 +45,22 @@
        <div class="fields">
 		<div class="four wide field">
         <label><span class="white">Image 1:</span></label>
-        <input placeholder="URL Please" type="text" name="place[[image]]">
+         <!--  Brings in the Upload Care uploader widget -->
+          <br>
+          <input type="hidden" role="uploadcare-uploader" name="place[[image]]" />
+       <!--  <input placeholder="URL Please" type="text" name="place[[image]]"> -->
       </div>
       <div class="four wide field">
         <label><span class="white">Image 2:</span></label>
-        <input placeholder="URL Please" type="text" name="place[[image]]">
+         <br>
+         <input type="hidden" role="uploadcare-uploader" name="place[[image]]" />
+       <!--  <input placeholder="URL Please" type="text" name="place[[image]]"> -->
       </div>
        <div class="four wide field">
         <label><span class="white">Image 3:</span></label>
-        <input placeholder="URL Please" type="text" name="place[[image]]">
+         <br>
+         <input type="hidden" role="uploadcare-uploader" name="place[[image]]" />
+       <!--  <input placeholder="URL Please" type="text" name="place[[image]]"> -->
       </div>
 	</div>
   <br>

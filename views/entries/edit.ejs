@@ -1,4 +1,4 @@
-<% include ../partials/headerUser %>
+<% include ../partials/headerUserUC %>
 
 <br>
 
@@ -42,15 +42,18 @@
        <div class="fields">
 		<div class="four wide field">
         <label><span class="white">Image 1:</span></label>
-        <input value=<%= entry.image[0]%> type="text" name="entry[[image]]">
+         <br>
+         <input type="hidden" role="uploadcare-uploader" value="<%= entry.image[0]%>"name="entry[[image]]" />
       </div>
       <div class="four wide field">
         <label><span class="white">Image 2:</span></label>
-        <input value=<%= entry.image[1]%> type="text" name="entry[[image]]">
+         <br>
+         <input type="hidden" role="uploadcare-uploader" value="<%= entry.image[1]%>"name="entry[[image]]" />
       </div>
        <div class="four wide field">
         <label><span class="white">Image 3:</span></label>
-        <input value=<%= entry.image[2]%> type="text" name="entry[[image]]">
+         <br>
+         <input type="hidden" role="uploadcare-uploader" value="<%= entry.image[2]%>"name="entry[[image]]" />
       </div>
 	</div>
     <br>

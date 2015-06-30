@@ -24,6 +24,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(loginMiddleware);
+// For use with Oauth
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -64,6 +65,9 @@ app.use(passport.session());
 //          }
 //        ));
     
+
+// Ability to have continuous sessions with Oauth
+
 // passport.serializeUser(function(user, done) {
 //   done(null, user);
 // });
@@ -144,9 +148,10 @@ app.post("/login", function (req, res) {
 
 // // ROUTES FOR AUTH WITH FACEBOOK // *******************
 
+// The initial route that a user is taken to via a link on the 
+// index log in page....
+
 // app.get('/auth/facebook', passport.authenticate('facebook'), function(req,res){
-
-
 // });
 // // Takes the user to FB to login-in
 // app.get('/auth/facebook/callback', function(req, res, next) {
@@ -423,44 +428,24 @@ db.Place.find({'ownerId':req.session.id}).populate('entries').populate('author')
          'default': function() {
           // log the request and respond with 406
           res.status(406).send('Not Acceptable');
-        }
-      });
-
-          // res.render('places/index', {places:places, currentuser:currentuser});
+                  }
+             });
         });
       }
       }
   });
-
-// db.Place.find({'ownerId':req.session.id}, function(err,places){
-// res.format({
-//         'text/html': function(){
-//         res.render("places/index", {places:places});
-//               },
-//       'application/json': function(){
-//         res.send({ places:places});
-//       },
-//       'default': function() {
-//         // log the request and respond with 406
-//         res.status(406).send('Not Acceptable');
-//         }
-//       });
-// });
-
-
 });
 
 
 
-
-
-// NEW ROUTE (RESTRICTED TO LOGGED IN USER) //
+// NEW ROUTE (RESTRICTED TO LOGGED IN USER) ///////////
 
 app.get('/places/new', routeMiddleware.ensureLoggedIn, function(req,res){
   var err = " ";
-  res.render("places/new", {err:err, currentuser:currentuser});
+  var UC_KEY = process.env.UC_KEY;
+   // Brings in Upload Care Key
+  res.render("places/new", {err:err, currentuser:currentuser, UC_KEY:UC_KEY});
 });
-
 
 
 
@@ -542,12 +527,14 @@ if (error) {
 // });
 
 
-// EDIT (RESTRICTED TO SPECIFIC LOGGED IN USER) //
+// EDIT (RESTRICTED TO SPECIFIC LOGGED IN USER) /////////////////
 
 app.get('/places/:id/edit', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUser, function(req,res){
+  var UC_KEY = process.env.UC_KEY;
+  // Brings in Upload Care Key
   db.Place.findById(req.params.id).populate('entries').exec(
      function (err, place) {
-         res.render("places/edit", {place:place, currentuser:currentuser});
+         res.render("places/edit", {place:place, currentuser:currentuser, UC_KEY:UC_KEY});
      });
 });
 
@@ -616,9 +603,11 @@ app.get('/places/:place_id/entries', function(req,res){
 // NEW ENTRY (RESTRICTED TO LOGGED IN USER) //
 
 app.get('/places/:place_id/entries/new', routeMiddleware.ensureLoggedIn, function(req,res){
+  var UC_KEY = process.env.UC_KEY;
+   // Brings in Upload Care Key
   db.Place.findById(req.params.place_id,
     function (err, place) {
-      res.render("entries/new", {place:place, err:err, currentuser:currentuser});
+      res.render("entries/new", {place:place, err:err, currentuser:currentuser, UC_KEY:UC_KEY});
     });
 });
 
@@ -641,8 +630,6 @@ app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(r
         if(err) {
           
           res.render("entries/new", {place:place, err:err, currentuser:currentuser});
-
-           // TODO: Look at entering a custom error message!
               
         } else {
 
@@ -664,8 +651,10 @@ app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(r
 
 app.get('/entries/:id/edit', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUserE, 
   function(req,res){
+     var UC_KEY = process.env.UC_KEY;
+   // Brings in Upload Care Key
   db.Entry.findById(req.params.id).populate('place').exec(function(err,entry){
-      res.render("entries/edit", {entry:entry, err:err, currentuser:currentuser});
+      res.render("entries/edit", {entry:entry, err:err, currentuser:currentuser, UC_KEY:UC_KEY});
     });
 });
 
