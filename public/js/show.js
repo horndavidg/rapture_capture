@@ -1,3 +1,8 @@
+// Page that runs single page functionality (with jQuery) through 
+// the “views/show” page. Makes XML GET Request to Expedia API. 
+// Currently NOT functioning with Heroku in deployment so code not in use, 
+// works on “localhost:” deployment....
+
 $(function() {
 
 $('#localattractions').click(function(e) {
@@ -14,6 +19,7 @@ var key = $('#key').val();
 $.ajax({
   url: 'http://terminal2.expedia.com/x/activities/search?location=' + location + '&apikey=' + key,
   method: "GET",
+  // makes request to Expedia API with ajax (single page functionality)
   success: function(data) {
   var info = JSON.stringify(data);
   var info2 = JSON.parse(info);
@@ -23,6 +29,7 @@ var title = '<h3 class="ui dividing header" id="indent"><span class="white">Loca
 
 $('#placehere').append(title);
 
+// Amends the found information to the page without refreshing 
 
 info2.activities.forEach(function(activity){
 
@@ -37,12 +44,6 @@ info2.activities.forEach(function(activity){
       }
 	});
 });
-
-
-
-
-
-
 
 
 

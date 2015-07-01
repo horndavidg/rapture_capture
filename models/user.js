@@ -23,6 +23,8 @@ var userSchema = new mongoose.Schema({
       type: String,
       required: true
     },
+    
+    // Placeholder for possible Facebook Oauth integration
     facebook: {
       type: String
     }

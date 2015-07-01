@@ -8,11 +8,13 @@ favicon = require('serve-favicon'),
 loginMiddleware = require("./middleware/loginHelper");
 routeMiddleware = require("./middleware/routeHelper");
 require('dotenv').load();
+// Loads .env file in root directory that contains API keys
 var passport = require('passport'), FacebookStrategy = require('passport-facebook').Strategy;
-
+// Passport used for Oauth and includes the Facebook Oauth Strategy for logging in via FB
 var request = require('request');
-
+// Used for making API requests
 var db = require("./models");
+// Connects Mongoose that then connects to the MongoDB
 
 
 // MIDDLEWARE // ****************************************
@@ -24,10 +26,12 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(loginMiddleware);
-// For use with Oauth
+
 app.use(passport.initialize());
 app.use(passport.session());
+// For use with Oauth
 
+// ******************************************
 // Facebook Strategy used by Passport when interacting with
 // the Facebook Auth. Uses given keys and allows access to 
 // information through the profile tag.... 
@@ -41,28 +45,20 @@ app.use(passport.session());
 //     db.User.findOne({'facebook':profile.id}, function(err, user) {
 //       if (err) { return done(err); }
 //       console.log("2nd>>>>>>>>>", user);
-
-//       if (!user) {
-        
+//       if (!user) {       
 //           var newuser = {
 //           username: profile.displayName,
 //           email: profile.profileUrl,
 //           password: profile.id,
 //           facebook: profile.id
 //         };
-
-
 //  db.User.create(newuser, function(err, user){
-//     if(err) {console.log(err);}
-
-                  
+//     if(err) {console.log(err);}                 
 //                     // req.session.id = user._id;
 //                     return done(err, user);
 //            });      
-//       } else {
-       
+//       } else {     
 //        return done(null, user);
-
 //              }
 //            });
 //          }
@@ -74,7 +70,6 @@ app.use(passport.session());
 // passport.serializeUser(function(user, done) {
 //   done(null, user);
 // });
-
 // passport.deserializeUser(function(user, done) {
 //   done(null, user);
 // });
@@ -140,8 +135,9 @@ app.post("/login", function (req, res) {
       req.login(user);
       res.redirect("/places");
     } else {
-      console.log(err);
-      console.log(user);
+      // console.log(err);
+      // console.log(user);
+      
       // ERROR HANDLING - SEE VIEWS AND MODELS FILES
       res.render("users/login", {err:err});
     }
@@ -157,46 +153,33 @@ app.get("/logout", function (req, res) {
 
 
 var currentuser;
-// used for nav bar
+// Variable placed in the global scope for use in the nav bar....
 
 
 // ROUTES FOR AUTH WITH FACEBOOK // ********************
 
 // The initial route that a user is taken to via a link on the 
 // index log in page....
-
 // app.get('/auth/facebook', passport.authenticate('facebook'), function(req,res){
 // });
 // // Takes the user to FB to login-in
+
+
 // app.get('/auth/facebook/callback', function(req, res, next) {
-
-// console.log("THIS RAN");
-
-//     passport.authenticate('facebook', function(err, user, info) {
-      
+// The location that the user is taken after the "passport.use" code has run, see the 
+// callback url. In theory if the authentication worked this will direct them to the 
+// places index page and if it fails, back to the login page....  
+// console.log("app.get(/auth/facebook/callback) >>>>>>> RAN");
+//     passport.authenticate('facebook', function(err, user, info) {     
 //        if (err) { return next(err); }
-
 //        if (!user) { return res.redirect('/login'); }
-
-//        req.login(user, function(err) {
-      
-//       if (err) { return next(err); }
-      
+//        req.login(user, function(err) {    
+//       if (err) { return next(err); }   
 //       return res.redirect('/places');
 //     });
 //   });
 // });
 
-
-// *****************************************************
-
-  // passport.authenticate('facebook', { failureRedirect: '/login' }),
-  // function(req, res, user) {
-  //     req.login(user);
-  //     res.redirect("/places");
-  // });
-// If log in is successful takes the user to places index or if they
-// fail redirects them to the login page
 
 
 
@@ -205,8 +188,10 @@ var currentuser;
 
 
 var local;
+// Variable placed in the global scope for potential use later....
 
-// GET SHOW PAGE ROUTE //
+
+////// GET SHOW PAGE ROUTE ///////
 
 app.get('/show', routeMiddleware.ensureLoggedIn, function(req,res){
       if(err) {
@@ -227,16 +212,16 @@ app.post('/show', function(req,res){
 
 
 if (req.body.location !== "") {
-
+// Location was entered in the POST Request
 
 request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + 
       req.body.location, function (error, response, body) {
-
-
+          // Request to Google API for Location statistics
+          
           if (error) {
     
           console.log("Error!  Request failed - " + error);
-              res.render("errors/500");
+            res.render("errors/500");
   
           } else if (!error && response.statusCode === 200) {
 
@@ -252,12 +237,16 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" +
                       
           lat = info.results[0].geometry.location.lat;
           lng = info.results[0].geometry.location.lng;
+          // Places the found coordinates into variables
         
           var local = {location:loc, lat:lat, long:lng};
+          // Assigns values to the global variable....
 
 request.get("http://api.openweathermap.org/data/2.5/weather?q=" + 
       req.body.location + "&units=imperial", function (error, response, body) {
-
+          // Assuming the given location was found by the Google API, makes a request 
+          // to a weather API for Locations statistics 
+          
           if (error) {
     
           console.log("Error!  Request failed - " + error);
@@ -296,11 +285,12 @@ request.get("http://api.openweathermap.org/data/2.5/weather?q=" +
 
                         } else {
 
+        // Weather statistics where found and will be populated on the page 
 
           res.format({
            
             'text/html': function(){
-                  // res.redirect("/show");
+                
                   res.render('show', {place:local, currentuser:currentuser, weather:weather, key:key});
                 },
      
@@ -322,8 +312,8 @@ request.get("http://api.openweathermap.org/data/2.5/weather?q=" +
 
 } else if (req.body.location === "") {
 
-
 request.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.body.lat + "," + req.body.long, function (error, response, body) {
+        // Assuming the location wasn’t given, reverse geo-location is used via Google API to get location information
 
           if (error) {
     
@@ -391,10 +381,9 @@ request.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + req.bo
                                   }); 
                               }
                             }
-                          });
-                          }
                         });
-
+                      }
+                   });
 
 
 //******************* PLACE ROUTES *************************//
@@ -406,11 +395,11 @@ app.get('/places', routeMiddleware.ensureLoggedIn, function(req,res){
  
 db.Place.find({'ownerId':req.session.id}).populate('entries').populate('author')
     .exec(function(err,places){
+      // Makes sure only the data base information that has the Owner’s Id is populated
   if(err) {
     console.log(err);
     res.render("errors/500");
 } else {
-      // console.log(req.session.id);
       if(req.session.id === null){
         res.redirect('/');
       } else {
@@ -432,10 +421,9 @@ db.Place.find({'ownerId':req.session.id}).populate('entries').populate('author')
              });
         });
       }
-      }
+    }
   });
 });
-
 
 
 // NEW ROUTE (RESTRICTED TO LOGGED IN USER) ///////////
@@ -457,13 +445,13 @@ app.get('/places/new', routeMiddleware.ensureLoggedIn, function(req,res){
 
 app.post('/places', routeMiddleware.ensureLoggedIn, function(req,res){
   
-  // Brings key in for error handling purposes
   var UC_KEY = process.env.UC_KEY;
+  // Brings key in for error handling purposes
 
-  // First API request to google for geolocation.... 
+  
   request.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + 
        req.body.place.location, function (error, response, body) {
-
+       // First API request to google for geolocation.... 
 if (error) {
     
           console.log("Error!  Request failed - " + error);
@@ -475,7 +463,10 @@ if (error) {
           
            if (info.status === 'ZERO_RESULTS') {
                     var lost = new db.Place(req.body.place);
-
+                    // If the user enters in a location manually 
+                    // that is not found by the Google API this allows it 
+                    // to still be saved in the db, the user can manually 
+                    //enter lat/long via the “views/places/edit” page for map marker  
                     lost.ownerId = req.session.id;
                     lost.save(function(err,place){
        
@@ -489,7 +480,7 @@ if (error) {
                  });
 
            } else {
-
+          // Manually entered location was found....
            lat = info.results[0].geometry.location.lat;
            lng = info.results[0].geometry.location.lng;
 
@@ -503,7 +494,7 @@ if (error) {
                   if(err) {
                       error = "Please GO BACK and make sure all the required fields are filled";
                       console.log(err);
-                      res.render("places/new", {err:error, currentuser:currentuser});
+                      res.render("places/new", {err:error, currentuser:currentuser, UC_KEY:UC_KEY});
                     } else {
                         res.redirect("/places"); 
                    }
@@ -563,10 +554,14 @@ app.get('/places/:id', routeMiddleware.ensureLoggedIn, function(req,res){
 // UPDATE (RESTRICTED TO SPECIFIC LOGGED IN USER) //
 
 app.put('/places/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUser, function(req,res){
+ 
+ var UC_KEY = process.env.UC_KEY;
+  // Brings in Upload Care Key
+
  db.Place.findByIdAndUpdate(req.params.id, req.body.place,
      function (err, place) {
        if(err) {
-         res.render("places/edit");
+         res.render("places/edit", {currentuser:currentuser, UC_KEY:UC_KEY});
        }
        else {
          res.redirect("/places");
@@ -584,7 +579,7 @@ app.delete('/places/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensure
     function (err, place) {
       if(err) {
         console.log(err);
-        res.render("places/show");
+        res.render("places/show", {place:place, currentuser:currentuser});
       }
       else {
         place.remove();
@@ -600,7 +595,7 @@ app.delete('/places/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensure
 // INDEX (RESTRICTED TO LOGGED IN USER) - Simply shows all of 
 // the Journal Entries for a given vacation.
 
-app.get('/places/:place_id/entries', function(req,res){
+app.get('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(req,res){
   db.Place.findById(req.params.place_id).populate('entries').exec(function(err,place){
     res.render("entries/index", {place:place, currentuser:currentuser});
   });
@@ -622,8 +617,8 @@ app.get('/places/:place_id/entries/new', routeMiddleware.ensureLoggedIn, functio
 
 app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(req,res){
   
-     // Brings key in for error handling purposes
      var UC_KEY = process.env.UC_KEY;
+     // Brings in Upload Care Key for error handling purposes
 
   db.Entry.create(req.body.entry, function(error, entries){
     if(error) {
@@ -631,8 +626,7 @@ app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(r
     db.Place.findById(req.params.place_id,
     function (err, place) {
       res.render("entries/new", {place:place, err:error, currentuser:currentuser, UC_KEY:UC_KEY});
-    });
-
+      });
     }
     
     else {
@@ -663,7 +657,7 @@ app.post('/places/:place_id/entries', routeMiddleware.ensureLoggedIn, function(r
 app.get('/entries/:id/edit', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUserE, 
   function(req,res){
      var UC_KEY = process.env.UC_KEY;
-   // Brings in Upload Care Key
+      // Brings in Upload Care Key
   db.Entry.findById(req.params.id).populate('place').exec(function(err,entry){
       res.render("entries/edit", {entry:entry, err:err, currentuser:currentuser, UC_KEY:UC_KEY});
     });
@@ -674,23 +668,27 @@ app.get('/entries/:id/edit', routeMiddleware.ensureLoggedIn, routeMiddleware.ens
 
 app.put('/entries/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUserE,
   function(req,res){
+   
+   var UC_KEY = process.env.UC_KEY;
+     // Brings in Upload Care Key for error handling purposes
+
   db.Entry.findByIdAndUpdate(req.params.id, req.body.entry,
      function (err, entry) {
       // console.log("Comment!", comment);
        if(err) {
-         res.render("entries/edit", {err:err, entry:entry});
+         res.render("entries/edit", {err:err, entry:entry, currentuser:currentuser, UC_KEY:UC_KEY});
        }
        else {
          res.redirect("/places/" + entry.place + "/entries");
        }
      });
-});
-
+   });
 
 
 // SHOW (RESTRICTED TO SPECIFIC LOGGED IN USER) //
 
-app.get('/entries/:id', function(req,res){
+app.get('/entries/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUserE,
+  function(req,res){
   db.Entry.findById(req.params.id)
     .populate('place')
     .exec(function(err,entry){
@@ -699,23 +697,25 @@ app.get('/entries/:id', function(req,res){
 });
 
 
-
-
 // DESTROY (RESTRICTED TO SPECIFIC LOGGED IN USER) //
 
 app.delete('/entries/:id', routeMiddleware.ensureLoggedIn, routeMiddleware.ensureCorrectUserE,
   function(req,res){
+  
+var UC_KEY = process.env.UC_KEY;
+     // Brings in Upload Care Key for error handling purposes
+
   db.Entry.findByIdAndRemove(req.params.id,
       function (err, entry) {
         if(err) {
           console.log(err);
-          res.render("entries/edit");
+          res.render("entries/edit", {entry:entry, err:err, currentuser:currentuser, UC_KEY:UC_KEY});
         }
         else {
           res.redirect("/places/" + entry.place  + "/entries");
         }
       });
-});
+    });
 
 
 // ********************************************************

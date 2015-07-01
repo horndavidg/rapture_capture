@@ -1,5 +1,8 @@
 <% include ../partials/headerIndex %>
 
+<!-- This is the Original simple text HTML Index Page prior to implementing single page functionality with searching ability via API’s  -->
+
+<!-- Not used at this point! -->
 
 <div id="map-canvas"></div>
 
@@ -18,6 +21,8 @@
 <% places.forEach(function(place){ %>
   <tr>
    <td><strong><a class="linkTitle" href="/places/<%= place._id%>"><%= place.name %></a></strong></td>
+
+<!-- Example of date manipulation for user readability -->
 
     <% var start = place.startdate.slice(5,7) + "/" + place.startdate.slice(8,10) + "/" + place.startdate.slice(0,4);
     var end = place.enddate.slice(5,7) + "/" + place.enddate.slice(8,10) + "/" + place.enddate.slice(0,4);

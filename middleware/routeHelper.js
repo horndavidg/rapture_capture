@@ -21,8 +21,9 @@ var routeHelpers = {
     });
   },
 
-    ensureCorrectUserE: function(req, res, next) {
-    db.Entry.findById(req.params.id, function(err,entry){
+  // Ensures the correct user for a specific Journal Entry....
+  ensureCorrectUserE: function(req, res, next) {
+   db.Entry.findById(req.params.id, function(err,entry){
       if (entry.ownerId !== req.session.id) {
         res.redirect('/');
       }
@@ -31,9 +32,6 @@ var routeHelpers = {
       }
     });
   },
-
-  // May require a second ensureCorrectUser depending on how many
-  // resources we are validating...
 
 
   preventLoginSignup: function(req, res, next) {
