@@ -1,13 +1,16 @@
+// Single page functionality for the Index Places Page
+
 $(function() {
   
   var map;
   
   function initialize() {
-    // Puts the Google Map on the page
+    // Puts the Google Map on the page, make sure it 
+    // always has dimensions assigned.... 
 
     map = new google.maps.Map(document.getElementById('map-canvas'), {
       zoom: 2,
-      center: {lat: 39.7643389, lng: -104.8551114}
+      center: {lat: 39.7643389, lng: -104.8551114} // Centered on Denver, CO
     });
 
 
@@ -19,9 +22,10 @@ $(function() {
 
 
   function addMarker(event) {
-  	   // This adds a marker to the map when you click on a select
+  	   // This adds a box below the map when you click on a select
        // spot, then sends a ajax call and uses the Google API to 
-       // populate a location name and adds it to the database.
+       // populate a location name, lat/long and then populates 
+       // that information in the box....  
 
           $('#searchhelpbox').remove();
 
@@ -37,25 +41,16 @@ $(function() {
         data: data,
         dataType: 'json'
       }).done(function(data) {
-
+          // Call to get data from the clicked location
 
           var html = placeHelp(data.place);
           $('#searchhelp').append(html);
+          // Populates the “Search Help” box below the map
 
   });
 
-    console.log(event.latLng.A);
-  	console.log(event.latLng.F);
-
-  	// Add your code to add markers here ***********************
-
-      // var myLatlng = new google.maps.LatLng(event.latLng.A,event.latLng.F);
-
-      // var marker = new google.maps.Marker({
-      //       position: myLatlng,
-      //       map: map,
-      //       title: 'Test!'
-      // });
+    // console.log(event.latLng.A);
+  	// console.log(event.latLng.F);
 
 }
 
@@ -104,6 +99,7 @@ function placeHtml(place) {
 
 var start = place.startdate.slice(5,7) + "/" + place.startdate.slice(8,10) + "/" + place.startdate.slice(0,4);
 var end = place.enddate.slice(5,7) + "/" + place.enddate.slice(8,10) + "/" + place.enddate.slice(0,4);
+// Manipulates date data for easier user recognition
 
 return '<tr><td><strong><a class="linkTitle" href="/places/' + place._id + '">' + place.name + 
 '</a></strong></td><td><strong>' + start + '</strong> - to - <strong>' + end + '</strong></td><td><a href="/places/' + place._id + 
@@ -115,7 +111,6 @@ return '<tr><td><strong><a class="linkTitle" href="/places/' + place._id + '">' 
 
   loadPlaces();
 
-// Form for addind a new location to the database
 
 $('#newlocation').click(function(e) {
     e.preventDefault();
@@ -147,21 +142,13 @@ $('#newlocation').click(function(e) {
         data: data,
         dataType: 'json'
       }).done(function(data) {
-          
+          // Google API call to get location information once the form is submitted, 
+          // goes to “app.post(‘/show’)” route....
       
          $('#newlocationform').remove();
         
       });     
  });
-
-
-
-
-
-
-
-
-
 
 
 
