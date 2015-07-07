@@ -24,11 +24,11 @@
        <div class="fields">
        <div class="four wide field">
         <label><span class="white">Start Date:</span></label>
-        <input value="<%= place.startdate%>" type="date" name="place[startdate]">
+        <input value="<%= place.startdate%>" placeholder="YYYY/MM/DD" type="date" name="place[startdate]">
       </div>
       <div class="four wide field">
         <label><span class="white">End Date:</span></label>
-        <input type="date" name="place[enddate]" value="<%= place.enddate%>">
+        <input type="date" placeholder="YYYY/MM/DD" name="place[enddate]" value="<%= place.enddate%>">
       </div>
       </div>
 
@@ -71,7 +71,7 @@
   <br>
   <a href="/places" id="indent" class="white">Go Back</a>
 
-
-
+<br>
+<br>
 
 <% include ../partials/footer %>
